@@ -1,0 +1,141 @@
+<html>
+    <head>
+        <style>
+            .filter-sidebar {
+                width: 300px;
+                padding: 20px;
+                background-color: #f4f4f4;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            
+            .filter-sidebar h2 {
+                font-size: 1.5em;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+            
+            .filter-sidebar h3 {
+                font-size: 1.2em;
+                margin-bottom: 10px;
+            }
+            
+            .filter-sidebar ul {
+                list-style-type: none;
+                padding-left: 0;
+            }
+            
+            .filter-sidebar li {
+                margin-bottom: 10px;
+            }
+            
+            .filter-sidebar label {
+                margin-left: 10px;
+                font-size: 1em;
+            }
+            
+            .filter-sidebar input[type="checkbox"] {
+                margin-right: 5px;
+            }
+            
+            .filter-sidebar .filter-price {
+                margin-top: 20px;
+            }
+            
+            .filter-sidebar input[type="range"] {
+                width: 100%;
+            }
+            
+            .filter-sidebar .filter-reset {
+                margin-top: 20px;
+                text-align: center;
+            }
+            
+            .filter-sidebar button {
+                background-color: #ff5733;
+                color: white;
+                border: none;
+                padding: 10px;
+                width: 100%;
+                font-size: 1em;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+            
+            .filter-sidebar button:hover {
+                background-color: #e14f2e;
+            }
+            
+        </style>
+    </head>
+    <body>
+        <aside class="filter-sidebar">
+            <h2>Filter Products</h2>
+            
+            <div class="filter-category">
+                <h3>Category</h3>
+                <ul>
+                    <li><input type="checkbox" id="men" name="category" value="men"><label for="men">Men's Shoes</label></li>
+                    <li><input type="checkbox" id="women" name="category" value="women"><label for="women">Women's Shoes</label></li>
+                    <li><input type="checkbox" id="kids" name="category" value="kids"><label for="kids">Kids' Shoes</label></li>
+                </ul>
+            </div>
+            
+            <div class="filter-size">
+                <h3>Size</h3>
+                <ul>
+                    <li><input type="checkbox" id="size-6" name="size" value="6"><label for="size-6">6</label></li>
+                    <li><input type="checkbox" id="size-7" name="size" value="7"><label for="size-7">7</label></li>
+                    <li><input type="checkbox" id="size-8" name="size" value="8"><label for="size-8">8</label></li>
+                    <li><input type="checkbox" id="size-9" name="size" value="9"><label for="size-9">9</label></li>
+                    <li><input type="checkbox" id="size-10" name="size" value="10"><label for="size-10">10</label></li>
+                </ul>
+            </div>
+            
+            <div class="filter-color">
+                <h3>Color</h3>
+                <ul>
+                    <li><input type="checkbox" id="black" name="color" value="black"><label for="black">Black</label></li>
+                    <li><input type="checkbox" id="white" name="color" value="white"><label for="white">White</label></li>
+                    <li><input type="checkbox" id="red" name="color" value="red"><label for="red">Red</label></li>
+                    <li><input type="checkbox" id="blue" name="color" value="blue"><label for="blue">Blue</label></li>
+                    <li><input type="checkbox" id="grey" name="color" value="grey"><label for="grey">Grey</label></li>
+                </ul>
+            </div>
+            
+            <div class="filter-brand">
+                <h3>Brand</h3>
+                <ul>
+                    <li><input type="checkbox" id="nike" name="brand" value="nike"><label for="nike">Nike</label></li>
+                    <li><input type="checkbox" id="adidas" name="brand" value="adidas"><label for="adidas">Adidas</label></li>
+                    <li><input type="checkbox" id="puma" name="brand" value="puma"><label for="puma">Puma</label></li>
+                    <li><input type="checkbox" id="reebok" name="brand" value="reebok"><label for="reebok">Reebok</label></li>
+                </ul>
+            </div>
+            
+            <div class="filter-price">
+                <h3>Price</h3>
+                <input type="range" id="price-range" name="price" min="0" max="500" value="250" step="10">
+                <label for="price-range">$0 - $500</label>
+            </div>
+            
+            <div class="filter-material">
+                <h3>Material</h3>
+                <ul>
+                    <li><input type="checkbox" id="leather" name="material" value="leather"><label for="leather">Leather</label></li>
+                    <li><input type="checkbox" id="synthetic" name="material" value="synthetic"><label for="synthetic">Synthetic</label></li>
+                    <li><input type="checkbox" id="mesh" name="material" value="mesh"><label for="mesh">Mesh</label></li>
+                    <li><input type="checkbox" id="canvas" name="material" value="canvas"><label for="canvas">Canvas</label></li>
+                </ul>
+            </div>
+            
+            <div class="filter-reset">
+                <button type="button" id="reset-filters">Reset Filters</button>
+            </div>
+        </aside>
+        
+    </body>
+</html>
+
+
+

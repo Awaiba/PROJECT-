@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+   <html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <!--=============== FAVICON ===============-->
+      <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+
+      <!--=============== REMIXICONS ===============-->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" crossorigin="">
+
+      <!--=============== SWIPER CSS ===============-->
+      <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
+
+      <!--=============== CSS ===============-->
+      <link rel="stylesheet" href="assets/css/styles.css">
+
+      <!-- Font Awesome CDN -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+      <title>Walk On</title>
+      <!--==================== HEADER ====================-->
+      <header class="header" id="header">
+         <nav class="nav container">
+            <div class="navLOGO">
+               <a href="index.html" class="nav__logo">
+                  <img src="assets/img/logoSHOES.png" alt="Logo of Shoes">
+               </a>
+               <h1 class="nav__logo-title">Walk On</h1>
+            </div>
+            
+            <div class="nav__menu" id="nav-menu">
+               <ul class="nav__list">
+                  <li class="nav__item">
+                     <a href="index.html" class="nav__link"><b>HOME</b></a>
+                  </li>
+                  <li class="nav__item">
+                     <a href="product.html" class="nav__link">PRODUCTS</a>
+                  </li>
+                  <li class="nav__item">
+                     <a href="contact.html" class="nav__link">CONTACT</a>
+                  </li>
+                  <li class="nav__item">
+                     <a href="loginRegister.html" class="nav__link">Login</a>
+                  </li>
+               </ul>
+      
+               <!-- Close Button -->
+               <div class="nav__close" id="nav-close">
+                  <i class="ri-close-line"></i>
+               </div>
+            </div>
+         
+      
+            <!-- Toggle Button -->
+            <div class="nav__toggle" id="nav-toggle">
+               <i class="ri-apps-2-fill"></i>
+            </div>
+         </nav>
+      </header>
+   
+    <style>
+        * {
+            --body-font: "Poppins", sans-serif;
+        }
+        body {
+            font-family: var(--body-font);
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        section {
+            padding: 20px;
+            background-color: white;
+            margin: 20px;
+            border-radius: 8px;
+        }
+
+        .container {
+            max-width: fit-content;
+            margin: 0 auto;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        .product-image {
+            width: 100%; /* Full width */
+            max-width: 300px; /* Limit max width */
+            border-radius: 8px;
+            margin: 0 auto; /* Center the image */
+            display: block; /* Ensures the image is block level */
+        }
+
+        .price {
+            font-size: 24px;
+            color: #007BFF;
+            text-align: center;
+        }
+
+        .buy-btn {
+            display: block;
+            width: 100%;
+            background-color: #007BFF;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .buy-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <section class="container">
+        <h2 id="product-name">Product Name</h2>
+        <img id="product-image" src="" alt="Product Image" class="product-image">
+        <p id="product-description">Product Description</p>
+        <p class="price" id="product-price">Product Price</p>
+        <button class="buy-btn">Buy Now</button>
+    </section>
+
+
+    <script>
+        // Retrieve product details from URL query parameters
+        const params = new URLSearchParams(window.location.search);
+        const productName = params.get('name');
+        const productImage = params.get('image');
+        const productPrice = params.get('price');
+        const productDescription = params.get('description');
+
+        // Populate the buyout page with product details
+        document.getElementById('product-name').innerText = decodeURIComponent(productName);
+        document.getElementById('product-image').src = decodeURIComponent(productImage);
+        document.getElementById('product-price').innerText = decodeURIComponent(productPrice);
+        document.getElementById('product-description').innerText = decodeURIComponent(productDescription);
+    </script>
+
+</body>
+</html>

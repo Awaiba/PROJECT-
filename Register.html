@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+   <html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" crossorigin="">
+      <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
+      <link rel="stylesheet" href="assets/css/Register.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+      <title>WalkOn</title>
+       <!--=========== HEADER ==========-->
+       <header class="header" id="header">
+
+         <nav class="nav container">
+            <div class="navLOGO">
+               <a href="index.html" class="nav__logo">
+                  <img src="assets/img/logoSHOES.png" alt="Logo of Shoes">
+               </a>
+               <h1 class="nav__logo-title">Walk On</h1>
+            </div>
+            <div class="nav__menu" id="nav-menu">
+               <ul class="nav__list">
+                  <li class="nav__item">
+                     <a href="index.html" class="nav__link">HOME</b></a>
+                  </li>
+
+                  <li class="nav__item">
+                     <a href="product.html" class="nav__link">PRODUCTS</a>
+                  </li>
+
+                  <li class="nav__item">
+                     <a href="contact.html" class="nav__link">CONTACT</a>
+                  </li>
+                  
+                  <li class="nav__item">
+                     <a href="loginRegister.html" class="nav__link"><b>REGISTER</b></a>
+                  </li>
+               </ul>
+
+               <div class="nav__close" id="nav-close">
+                  <i class="ri-close-line"></i>
+               </div>
+            </div>
+            <div class="nav__toggle" id="nav-toggle">
+               <i class="ri-apps-2-fill"></i>
+            </div>
+         </nav>
+         
+      </header>
+
+   </head>
+   <body>
+     
+<body>
+
+    <div class="register-container">
+        <form class="register-form" action="assets/php/register.php" method="post">
+            <h2>Create an Account</h2>
+            <div class="input-group">
+                <label for="full-name">Full Name</label>
+                <input type="text" id="full-name" name="full-name" placeholder="Enter your full name" required>
+            </div>
+            <div class="input-group">
+                <label for="phone-no">Phone Number</label>
+                <input type="tel" id="phone-no" name="phone-no" placeholder="Enter your phone number" required>
+            </div>
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Create a password" required>
+            </div>
+            <div class="input-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required>
+            </div>
+            <button type="submit" class="register-btn">Register</button>
+            <div class="login-link">
+                <p>Already have an account? <a href="loginRegister.html">Login here</a></p>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

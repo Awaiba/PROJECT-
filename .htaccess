@@ -1,0 +1,6 @@
+# Allow PHP to run as a script
+AddHandler application/x-httpd-php .php
+
+# Ensure mod_rewrite is enabled
+RewriteEngine On
+RewriteRule ^insert.php$ insert.php [L]

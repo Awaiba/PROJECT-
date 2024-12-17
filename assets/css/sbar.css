@@ -1,0 +1,64 @@
+.filter-sidebar {
+    width: 300px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filter-sidebar h2 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.filter-sidebar h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.filter-sidebar ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.filter-sidebar li {
+    margin-bottom: 10px;
+}
+
+.filter-sidebar label {
+    margin-left: 10px;
+    font-size: 1em;
+}
+
+.filter-sidebar input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.filter-sidebar .filter-price {
+    margin-top: 20px;
+}
+
+.filter-sidebar input[type="range"] {
+    width: 100%;
+}
+
+.filter-sidebar .filter-reset {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.filter-sidebar button {
+    background-color: #ff5733;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.filter-sidebar button:hover {
+    background-color: #e14f2e;
+}
