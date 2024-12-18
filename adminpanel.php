@@ -13,6 +13,20 @@ include 'dbConnection.php';
 // Fetch user data
 $query = "SELECT * FROM users";
 $result = mysqli_query($conn, $query);
+
+include 'dbConnection.php';
+// Ensure $conn is properly set up to connect to your database
+
+// Fetch Product data
+$productQuery = "SELECT * FROM product";
+$productResult = mysqli_query($conn, $productQuery);
+
+include 'dbConnection.php';
+// Ensure $conn is properly set up to connect to your database
+
+// Fetch user order details
+$orderQuery = "SELECT * FROM user_orders";
+$orderResult = mysqli_query($conn, $orderQuery);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -161,6 +175,85 @@ $result = mysqli_query($conn, $query);
                 <?php endwhile; ?>
             </tbody>
         </table>
+        <h1>INVENTORY</h1> <!-- Big Heading for User Details -->
+        <table class="admin-table">
+    <thead>
+        <tr>
+            <th>Product ID</th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Price</th>
+            <th>Material</th>
+            <th>Color</th>
+            <th>Size</th>
+            <th>Stock</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php while ($productRow = mysqli_fetch_assoc($productResult)) : ?>
+            <tr>
+                <td><?php echo $productRow['product_id']; ?></td>
+                <td><?php echo $productRow['name']; ?></td>
+                <td><?php echo $productRow['brand']; ?></td>
+                <td><?php echo $productRow['price']; ?></td>
+                <td><?php echo $productRow['material']; ?></td>
+                <td><?php echo $productRow['color']; ?></td>
+                <td><?php echo $productRow['size']; ?></td>
+                <td><?php echo $productRow['stock']; ?></td>
+                <td>
+                    <a href="editProduct.php?id=<?php echo $productRow['product_id']; ?>" class="btn btn-edit">Edit</a>
+                    <a href="deleteProduct.php?id=<?php echo $productRow['product_id']; ?>" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
+                </td>
+            </tr>
+        <?php endwhile; ?>
+    </tbody>
+        </table>
+        <h1>User Orders</h1> <!-- Big Heading for User Details -->
+        <table class="admin-table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>User ID</th>
+            <th>Product ID</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>District</th>
+            <th>Street</th>
+            <th>Payment Method</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php while ($orderRow = mysqli_fetch_assoc($orderResult)) : ?>
+            <tr>
+                <td><?php echo $orderRow['order_id']; ?></td>
+                <td><?php echo $orderRow['user_id']; ?></td>
+                <td><?php echo $orderRow['product_id']; ?></td>
+                <td><?php echo $orderRow['quantity']; ?></td>
+                <td><?php echo $orderRow['total_price']; ?></td>
+                <td><?php echo $orderRow['name']; ?></td>
+                <td><?php echo $orderRow['phone']; ?></td>
+                <td><?php echo $orderRow['email']; ?></td>
+                <td><?php echo $orderRow['address']; ?></td>
+                <td><?php echo $orderRow['district']; ?></td>
+                <td><?php echo $orderRow['street']; ?></td>
+                <td><?php echo $orderRow['payment_method']; ?></td>
+                <td><?php echo $orderRow['created_at']; ?></td>
+                <td>
+                    <a href="editOrder.php?id=<?php echo $orderRow['order_id']; ?>" class="btn btn-edit">Edit</a>
+                    <a href="deleteOrder.php?id=<?php echo $orderRow['order_id']; ?>" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this order?');">Delete</a>
+                </td>
+            </tr>
+        <?php endwhile; ?>
+    </tbody>
+</table>
+
     </main>
 
 </body>
