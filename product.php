@@ -1,3 +1,16 @@
+<?php
+session_start();
+
+// Redirect to login page if not logged in or role is not 'user'
+if (!isset($_SESSION['username'])) {
+    header('Location: loginRegister.php'); // Redirect if not logged in
+    exit;
+}
+
+$username = $_SESSION['username']; // Assuming username is stored in session
+
+// Other database checks, if required, can be placed here
+?>
 <!DOCTYPE html>
    <html lang="en">
    <head>
@@ -22,30 +35,33 @@
             </div>
             
             <div class="nav__menu" id="nav-menu">
-               <ul class="nav__list">
-                  <li class="nav__item">
-                     <a href="index.php" class="nav__link">HOME</a>
-                  </li>
-                  <li class="nav__item">
-                     <a href="product.php" class="nav__link"><b>PRODUCTS</b></a>
-                  </li>
-                  <li class="nav__item">
-                     <a href="contact.php" class="nav__link">CONTACT</a>
-                  </li>
-                  <li class="nav__item">
-                     <a href="loginRegister.php" class="nav__link">Login</a>
-                  </li>
+            <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="userDashboard.php" class="nav__link">HOME</a>
+                    </li>
 
-               </ul>
+                    <li class="nav__item">
+                        <a href="product.php" class="nav__link"><b>PRODUCTS</b></a>
+                    </li>
+
+                    <li class="nav__item">
+                        <a href="contact.php" class="nav__link">CONTACT</a>
+                    </li>
+
+                    <li class="nav__item">
+                        <a href="trackingorder.php" class="nav__link"><?php echo htmlspecialchars($username); ?></a>
+                    </li>
+
+                    <li class="nav__item">
+                        <a href="logout.php" class="nav__link">LOG OUT</a>
+                    </li>
+                </ul>
       
                <!-- Close Button -->
                <div class="nav__close" id="nav-close">
                   <i class="ri-close-line"></i>
                </div>
             </div>
-            
-         
-      
             <!-- Toggle Button -->
             <div class="nav__toggle" id="nav-toggle">
                <i class="ri-apps-2-fill"></i>

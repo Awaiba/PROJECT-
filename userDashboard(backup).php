@@ -1,70 +1,77 @@
+<?php
+session_start();
+if ($_SESSION['role'] !== 'user') {
+    header('Location: loginRegister.php'); // Redirect to login if not admin
+    exit;
+}
+?>
 <!DOCTYPE html>
-   <html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      
-      <!--=============== FAVICON ===============-->
-      <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!--=============== FAVICON ===============-->
+    <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
 
-      <!--=============== REMIXICONS ===============-->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" crossorigin="">
+    <!--=============== REMIXICONS ===============-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" crossorigin="anonymous">
 
-      <!--=============== SWIPER CSS ===============-->
-      <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
+    <!--=============== SWIPER CSS ===============-->
+    <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
 
-      <!--=============== CSS ===============-->
-      <link rel="stylesheet" href="assets/css/styles.css">
+    <!--=============== CSS ===============-->
+    <link rel="stylesheet" href="assets/css/styles.css">
 
-      <!-- Font Awesome CDN -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-      <title>Walk On</title>
-      <!--==================== HEADER ====================-->
-      <header class="header" id="header">
-
-         <nav class="nav container">
+    <title>Walk On</title>
+    <!--==================== HEADER ====================-->
+    <header class="header" id="header">
+        <nav class="nav container">
             <div class="navLOGO">
-               <a href="index.php" class="nav__logo">
-                  <img src="assets/img/logoSHOES.png" alt="Logo of Shoes">
-               </a>
-               <h1 class="nav__logo-title">Walk On</h1>
+                <a href="index.php" class="nav__logo">
+                    <img src="assets/img/logoSHOES.png" alt="Logo of Shoes">
+                </a>
+                <h1 class="nav__logo-title">Walk On</h1>
             </div>
             <div class="nav__menu" id="nav-menu">
-               <ul class="nav__list">
-               <ul class="nav__list">
-                    <li class="nav__item">
-                        <a href="index.php" class="nav__link"><b>HOME</b></a>
-                    </li>
+                <ul class="nav__list">
+                <li class="nav__item">
+                     <a href="index.php" class="nav__link"><b>HOME</b></a>
+                  </li>
+
+                  <li class="nav__item">
+                     <a href="product.php" class="nav__link">PRODUCTS</a>
+                  </li>
+
+                  <li class="nav__item">
+                     <a href="contact.php" class="nav__link">CONTACT</a>
+                  </li>
+
+                  <li class="nav__item">
+                     <a href="trackingorder.php" class="nav__link">ORDERS</a>
+                  </li>
 
                     <li class="nav__item">
-                        <a href="product.php" class="nav__link">PRODUCTS</a>
+                        <a href="logout.php" class="nav__link">LOG OUT</a>
                     </li>
+                </ul>
 
-                    <li class="nav__item">
-                        <a href="contact.php" class="nav__link">CONTACT</a>
-                    </li>
-
-                     <li class="nav__item">
-                     <a href="loginRegister.php" class="nav__link">Login</a>
-                     </li>
-                  </ul>
-
-               <!-- Close Button -->
-
-               <div class="nav__close" id="nav-close">
-                  <i class="ri-close-line"></i>
-               </div>
+                <!-- Close Button -->
+                <div class="nav__close" id="nav-close">
+                    <i class="ri-close-line"></i>
+                </div>
             </div>
             <!-- Toggle Button -->
             <div class="nav__toggle" id="nav-toggle">
-               <i class="ri-apps-2-fill"></i>
+                <i class="ri-apps-2-fill"></i>
             </div>
-         </nav>
-         
-      </header>
-   </head>
-   <body>
+        </nav>
+    </header>
+</head>
+<body>
       
 
       <!--==================== MAIN ====================-->

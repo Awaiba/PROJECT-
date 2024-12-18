@@ -1,4 +1,16 @@
-<!DOCTYPE html>
+<?php
+session_start();
+
+// Redirect to login page if not logged in or role is not 'user'
+if (!isset($_SESSION['username'])) {
+    header('Location: loginRegister.php'); // Redirect if not logged in
+    exit;
+}
+
+$username = $_SESSION['username']; // Assuming username is stored in session
+
+// Other database checks, if required, can be placed here
+?><!DOCTYPE html>
    <html lang="en">
    <head>
       <meta charset="UTF-8">
@@ -19,20 +31,27 @@
         <h1 class="nav__logo-title">Walk On</h1>
     </div>
     <div class="nav__menu" id="nav-menu">
-        <ul class="nav__list">
-            <li class="nav__item">
-                <a href="index.php" class="nav__link">HOME</a>
-            </li>
-            <li class="nav__item">
-                <a href="product.php" class="nav__link">PRODUCTS</a>
-            </li>
-            <li class="nav__item">
-                <a href="contact.php" class="nav__link"><b>CONTACT</b></a>
-            </li>
-            <li class="nav__item">
-                <a href="loginRegister.php" class="nav__link">LOG IN</a>
-            </li>
-        </ul>
+    <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="userDashboard.php" class="nav__link">HOME</a>
+                    </li>
+
+                    <li class="nav__item">
+                        <a href="product.php" class="nav__link">PRODUCTS</a>
+                    </li>
+
+                    <li class="nav__item">
+                        <a href="contact.php" class="nav__link"><b>CONTACT</b></a>
+                    </li>
+
+                    <li class="nav__item">
+                        <a href="trackingorder.php" class="nav__link"><?php echo htmlspecialchars($username); ?></a>
+                    </li>
+
+                    <li class="nav__item">
+                        <a href="logout.php" class="nav__link">LOG OUT</a>
+                    </li>
+                </ul>
         <div class="nav__close" id="nav-close">
             <i class="ri-close-line"></i>
         </div>

@@ -1,56 +1,74 @@
 <?php
 session_start();
 
-// Check if the user is not an admin, redirect to login
+// Redirect to login page if not logged in or role is not 'admin'
 if ($_SESSION['role'] !== 'admin') {
-    header('Location: loginRegister.php'); // Redirect to login if not admin
+    header('Location: loginRegister.php'); // Redirect if not an admin
     exit;
 }
 
-// Database connection
-include 'dbConnection.php';
+// CSRF Token validation
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token'])) {
+    die('Invalid CSRF token.');
+}
 
-// Fetch user data
-$query = "SELECT * FROM users";
-$result = mysqli_query($conn, $query);
+// Database connection using PDO
+$host = 'localhost'; // or your database host
+$dbname = 'walkon'; // your database name
+$username = 'root'; // your database username
+$password = ''; // your database password (empty if no password)
 
-include 'dbConnection.php';
-// Ensure $conn is properly set up to connect to your database
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Set error mode to exception
+} catch (PDOException $e) {
+    // If connection fails, handle the error
+    die("Database connection failed: " . $e->getMessage());
+}
 
-// Fetch Product data
+// Fetching data securely using prepared statements
+function fetchData($pdo, $query, $params = []) {
+    $stmt = $pdo->prepare($query);
+    $stmt->execute($params);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Get admin user information from session
+$username = $_SESSION['username']; // Get the username from session
+
+$query = "SELECT username FROM users WHERE username = ? AND role = 'admin'";
+$user = fetchData($pdo, $query, [$username]);
+
+// Check if admin user exists
+if (empty($user)) {
+    // Handle the case where no admin user is found
+    header('Location: loginRegister.php');
+    exit;
+}
+
+$fullName = htmlspecialchars($user[0]['username'], ENT_QUOTES, 'UTF-8'); // Sanitize admin username
+
+// Fetching product, user, and order data
 $productQuery = "SELECT * FROM product";
-$productResult = mysqli_query($conn, $productQuery);
+$productResult = fetchData($pdo, $productQuery);
 
-include 'dbConnection.php';
-// Ensure $conn is properly set up to connect to your database
+$userQuery = "SELECT * FROM users";
+$userResult = fetchData($pdo, $userQuery);
 
-// Fetch user order details
 $orderQuery = "SELECT * FROM user_orders";
-$orderResult = mysqli_query($conn, $orderQuery);
+$orderResult = fetchData($pdo, $orderQuery);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!--=============== FAVICON ===============-->
     <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
-
-    <!--=============== REMIXICONS ===============-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" crossorigin="anonymous">
-
-    <!--=============== SWIPER CSS ===============-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css">
     <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
-
-    <!--=============== CSS ===============-->
     <link rel="stylesheet" href="assets/css/styles.css">
-    <link rel="stylesheet" href="assets/css/adminPanel.css">
-
-    <!-- Font Awesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-    <title>Admin Panel - Walk On</title>
+    <title>Welcome - Walk On</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -59,11 +77,6 @@ $orderResult = mysqli_query($conn, $orderQuery);
         .admin-panel {
             padding: 20px;
             padding-top: 100px;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
         }
 
         .admin-table {
@@ -114,9 +127,8 @@ $orderResult = mysqli_query($conn, $orderQuery);
     </style>
 </head>
 <body>
-    
-    <header class="header" id="header">
 
+    <header class="header" id="header">
         <nav class="nav container">
             <div class="navLOGO">
                 <a href="index.php" class="nav__logo">
@@ -130,30 +142,59 @@ $orderResult = mysqli_query($conn, $orderQuery);
                         <a href="adminDashboard.php" class="nav__link">HOME</a>
                     </li>
                     <li class="nav__item">
-                        <a href="adminPanel.php" class="nav__link"><b>ADMIN</b></a>
+                        <a href="adminPanel.php" class="nav__link"><b><?php echo htmlspecialchars($fullName); ?></b></a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="logout.php" class="nav__link">LOG OUT</a>
                     </li>
                 </ul>
-
-                <!-- Close Button -->
-
                 <div class="nav__close" id="nav-close">
                     <i class="ri-close-line"></i>
                 </div>
             </div>
-            <!-- Toggle Button -->
             <div class="nav__toggle" id="nav-toggle">
                 <i class="ri-apps-2-fill"></i>
             </div>
         </nav>
-        
     </header>
 
     <main class="admin-panel container">
-        <h1>User Details</h1> <!-- Big Heading for User Details -->
+        <h1>Product Details</h1>
         <table class="admin-table">
             <thead>
                 <tr>
-                    <th>Full Name</th>
+                    <th>Product ID</th>
+                    <th>Name</th>
+                    <th>Brand</th>
+                    <th>Price</th>
+                    <th>Material</th>
+                    <th>Color</th>
+                    <th>Size</th>
+                    <th>Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($productResult as $productRow) : ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($productRow['product_id']); ?></td>
+                        <td><?php echo htmlspecialchars($productRow['name']); ?></td>
+                        <td><?php echo htmlspecialchars($productRow['brand']); ?></td>
+                        <td><?php echo htmlspecialchars($productRow['price']); ?></td>
+                        <td><?php echo htmlspecialchars($productRow['material']); ?></td>
+                        <td><?php echo htmlspecialchars($productRow['color']); ?></td>
+                        <td><?php echo htmlspecialchars($productRow['size']); ?></td>
+                        <td><?php echo htmlspecialchars($productRow['stock']); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <h1>User Details</h1>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
                     <th>Phone Number</th>
                     <th>Email</th>
                     <th>Role</th>
@@ -161,99 +202,68 @@ $orderResult = mysqli_query($conn, $orderQuery);
                 </tr>
             </thead>
             <tbody>
-                <?php while ($row = mysqli_fetch_assoc($result)) : ?>
+    <?php if (isset($_SESSION['message'])): ?>
+        <div class="alert alert-success" role="alert">
+            <?php echo $_SESSION['message']; ?>
+        </div>
+    <?php unset($_SESSION['message']); endif; ?>
+
+    <?php foreach ($userResult as $userRow) : ?>
+        <tr>
+            <td><?php echo htmlspecialchars($userRow['id']); ?></td>
+            <td><?php echo htmlspecialchars($userRow['username']); ?></td>
+            <td><?php echo htmlspecialchars($userRow['phone_no']); ?></td>
+            <td><?php echo htmlspecialchars($userRow['email']); ?></td>
+            <td><?php echo htmlspecialchars($userRow['role']); ?></td>
+            <td>
+                <a href="assets/inventoryMGMT/editUser.php?id=<?php echo $userRow['id']; ?>" class="btn btn-edit">Edit</a>
+                <a href="assets/inventoryMGMT/deleteUser.php?id=<?php echo $userRow['id']; ?>" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</tbody>
+
+        </table>
+
+        <h1>User Orders</h1>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>User ID</th>
+                    <th>Product ID</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>District</th>
+                    <th>Street</th>
+                    <th>Payment Method</th>
+                    <th>Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($orderResult as $orderRow) : ?>
                     <tr>
-                        <td><?php echo $row['full_name']; ?></td>
-                        <td><?php echo $row['phone_no']; ?></td>
-                        <td><?php echo $row['email']; ?></td>
-                        <td><?php echo $row['role']; ?></td>
-                        <td>
-                            <a href="editUser.php?id=<?php echo $row['id']; ?>" class="btn btn-edit">Edit</a>
-                            <a href="deleteUser.php?id=<?php echo $row['id']; ?>" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
-                        </td>
+                        <td><?php echo htmlspecialchars($orderRow['order_id']); ?></td>
+                        <td><?php echo htmlspecialchars($orderRow['user_id']); ?></td>
+                        <td><?php echo htmlspecialchars($orderRow['product_id']); ?></td>
+                        <td><?php echo htmlspecialchars($orderRow['quantity']); ?></td>
+                        <td><?php echo htmlspecialchars($orderRow['total_price']); ?></td>
+                        <td><?php echo htmlspecialchars($orderRow['name']); ?></td>
+                        <td><?php echo htmlspecialchars($orderRow['phone']); ?></td>
+                        <td><?php echo htmlspecialchars($orderRow['email']); ?></td>
+                        <td><?php echo htmlspecialchars($orderRow['address']); ?></td>
+                        <td><?php echo htmlspecialchars($orderRow['district']); ?></td>
+                        <td><?php echo htmlspecialchars($orderRow['street']); ?></td>
+                        <td><?php echo htmlspecialchars($orderRow['payment_method']); ?></td>
+                        <td><?php echo htmlspecialchars($orderRow['created_at']); ?></td>
                     </tr>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
             </tbody>
         </table>
-        <h1>INVENTORY</h1> <!-- Big Heading for User Details -->
-        <table class="admin-table">
-    <thead>
-        <tr>
-            <th>Product ID</th>
-            <th>Name</th>
-            <th>Brand</th>
-            <th>Price</th>
-            <th>Material</th>
-            <th>Color</th>
-            <th>Size</th>
-            <th>Stock</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php while ($productRow = mysqli_fetch_assoc($productResult)) : ?>
-            <tr>
-                <td><?php echo $productRow['product_id']; ?></td>
-                <td><?php echo $productRow['name']; ?></td>
-                <td><?php echo $productRow['brand']; ?></td>
-                <td><?php echo $productRow['price']; ?></td>
-                <td><?php echo $productRow['material']; ?></td>
-                <td><?php echo $productRow['color']; ?></td>
-                <td><?php echo $productRow['size']; ?></td>
-                <td><?php echo $productRow['stock']; ?></td>
-                <td>
-                    <a href="editProduct.php?id=<?php echo $productRow['product_id']; ?>" class="btn btn-edit">Edit</a>
-                    <a href="deleteProduct.php?id=<?php echo $productRow['product_id']; ?>" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
-                </td>
-            </tr>
-        <?php endwhile; ?>
-    </tbody>
-        </table>
-        <h1>User Orders</h1> <!-- Big Heading for User Details -->
-        <table class="admin-table">
-    <thead>
-        <tr>
-            <th>Order ID</th>
-            <th>User ID</th>
-            <th>Product ID</th>
-            <th>Quantity</th>
-            <th>Total Price</th>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>Address</th>
-            <th>District</th>
-            <th>Street</th>
-            <th>Payment Method</th>
-            <th>Created At</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php while ($orderRow = mysqli_fetch_assoc($orderResult)) : ?>
-            <tr>
-                <td><?php echo $orderRow['order_id']; ?></td>
-                <td><?php echo $orderRow['user_id']; ?></td>
-                <td><?php echo $orderRow['product_id']; ?></td>
-                <td><?php echo $orderRow['quantity']; ?></td>
-                <td><?php echo $orderRow['total_price']; ?></td>
-                <td><?php echo $orderRow['name']; ?></td>
-                <td><?php echo $orderRow['phone']; ?></td>
-                <td><?php echo $orderRow['email']; ?></td>
-                <td><?php echo $orderRow['address']; ?></td>
-                <td><?php echo $orderRow['district']; ?></td>
-                <td><?php echo $orderRow['street']; ?></td>
-                <td><?php echo $orderRow['payment_method']; ?></td>
-                <td><?php echo $orderRow['created_at']; ?></td>
-                <td>
-                    <a href="editOrder.php?id=<?php echo $orderRow['order_id']; ?>" class="btn btn-edit">Edit</a>
-                    <a href="deleteOrder.php?id=<?php echo $orderRow['order_id']; ?>" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this order?');">Delete</a>
-                </td>
-            </tr>
-        <?php endwhile; ?>
-    </tbody>
-</table>
-
     </main>
 
 </body>

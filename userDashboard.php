@@ -1,13 +1,48 @@
 <?php
 session_start();
+
+// Redirect to login page if not logged in or role is not 'user'
 if ($_SESSION['role'] !== 'user') {
-    header('Location: loginRegister.php'); // Redirect to login if not admin
+    header('Location: loginRegister.php'); // Redirect if not a user
     exit;
 }
+
+// Include database connection
+$host = 'localhost'; // or your database host
+$dbname = 'walkon'; // your database name
+$username = 'root'; // your database username
+$password = ''; // your database password (empty if no password)
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Set error mode to exception
+} catch (PDOException $e) {
+    // If connection fails, handle the error
+    die("Database connection failed: " . $e->getMessage());
+}
+
+// Get user information from session
+$username = $_SESSION['username']; // Get the username from session
+
+$query = "SELECT username FROM users WHERE username = ?";
+$stmt = $pdo->prepare($query);
+$stmt->execute([$username]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Check if user exists
+if (!$user) {
+    // Handle the case where no user is found
+    header('Location: loginRegister.php');
+    exit;
+}
+
+$fullName = $user['username']; // Store username from the database
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
@@ -26,8 +61,8 @@ if ($_SESSION['role'] !== 'user') {
     <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-    <title>Walk On</title>
-    <!--==================== HEADER ====================-->
+    <title>Welcome - Walk On</title>
+    <!-- Header Section -->
     <header class="header" id="header">
         <nav class="nav container">
             <div class="navLOGO">
@@ -38,17 +73,21 @@ if ($_SESSION['role'] !== 'user') {
             </div>
             <div class="nav__menu" id="nav-menu">
                 <ul class="nav__list">
-                <li class="nav__item">
-                     <a href="index.php" class="nav__link"><b>HOME</b></a>
-                  </li>
+                    <li class="nav__item">
+                        <a href="userDatabase.php" class="nav__link"><b>HOME</b></a>
+                    </li>
 
-                  <li class="nav__item">
-                     <a href="product.php" class="nav__link">PRODUCTS</a>
-                  </li>
+                    <li class="nav__item">
+                        <a href="product.php" class="nav__link">PRODUCTS</a>
+                    </li>
 
-                  <li class="nav__item">
-                     <a href="contact.php" class="nav__link">CONTACT</a>
-                  </li>
+                    <li class="nav__item">
+                        <a href="contact.php" class="nav__link">CONTACT</a>
+                    </li>
+
+                    <li class="nav__item">
+                        <a href="trackingorder.php" class="nav__link"><?php echo htmlspecialchars($username); ?></a>
+                    </li>
 
                     <li class="nav__item">
                         <a href="logout.php" class="nav__link">LOG OUT</a>
@@ -67,6 +106,8 @@ if ($_SESSION['role'] !== 'user') {
         </nav>
     </header>
 </head>
+<body>
+
 <body>
       
 
@@ -574,4 +615,6 @@ if ($_SESSION['role'] !== 'user') {
       <script src="assets/js/cart.js"></script>
 
    </body>
+
+</body>
 </html>
