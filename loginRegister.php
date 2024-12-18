@@ -19,11 +19,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
+        
         // Verify the password
         if (password_verify($password, $row['password'])) {
-            // User exists, start session and redirect
+            // User exists and password is correct, start session and redirect
             $_SESSION['username'] = $username;
-            header('Location: index.php'); // Redirect to dashboard or wherever you need
+            $_SESSION['role'] = $row['role']; // Store the user role in session
+            
+            // Redirect based on user role
+            if ($row['role'] === 'admin') {
+                header('Location: adminDashboard.php'); // Admin specific page
+            } else {
+                header('Location: userDashboard.php'); // User specific page
+            }
             exit();
         } else {
             // Invalid password
@@ -83,8 +91,7 @@ if (isset($_SESSION['message'])) {
                         <a href="contact.php" class="nav__link">CONTACT</a>
                     </li>
                     <li class="nav__item">
-                        <a href="register.php" class="nav__link">REGISTER</a>
-                    </li>
+                        <a href="register.php" class="nav__link">REGISTER</a></li>
                 </ul>
                 <div class="nav__close" id="nav-close">
                     <i class="ri-close-line"></i>
