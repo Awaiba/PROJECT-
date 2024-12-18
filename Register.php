@@ -19,26 +19,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cpassword = sanitizeInput($_POST['confirm-password']);
     $role = sanitizeInput($_POST['role']); // Ensure role is sanitized
 
-    // Check if user already exists
-    $select = mysqli_query($conn, "SELECT * FROM `users` WHERE email = '$email'");
-    if (mysqli_num_rows($select) > 0) {
-        $_SESSION['message'] = 'User already exists!';
+    // Check if an admin already exists
+    $checkAdminQuery = mysqli_query($conn, "SELECT * FROM `users` WHERE `role` = 'admin' LIMIT 1");
+    if (mysqli_num_rows($checkAdminQuery) > 0 && $role === 'admin') {
+        $_SESSION['message'] = 'An admin already exists. Only one admin is allowed.';
     } else {
-        // Check if passwords match
-        if ($password !== $cpassword) {
-            $_SESSION['message'] = 'Passwords do not match!';
+        // Check if user already exists
+        $select = mysqli_query($conn, "SELECT * FROM `users` WHERE email = '$email'");
+        if (mysqli_num_rows($select) > 0) {
+            $_SESSION['message'] = 'User already exists!';
         } else {
-            // Encrypt password
-            $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-
-            // Insert user data into the database
-            $query = "INSERT INTO `users` (username, phone_no, email, password, role) VALUES ('$name', '$phone_no', '$email', '$hashed_password', '$role')";
-            if (mysqli_query($conn, $query)) {
-                $_SESSION['message'] = 'Registration successful!';
-                header('Location: loginRegister.php'); // Redirect to login page
-                exit;
+            // Check if passwords match
+            if ($password !== $cpassword) {
+                $_SESSION['message'] = 'Passwords do not match!';
             } else {
-                $_SESSION['message'] = 'Query failed: ' . mysqli_error($conn);
+                // Encrypt password
+                $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+
+                // Insert user data into the database
+                $query = "INSERT INTO `users` (username, phone_no, email, password, role) VALUES ('$name', '$phone_no', '$email', '$hashed_password', '$role')";
+                if (mysqli_query($conn, $query)) {
+                    $_SESSION['message'] = 'Registration successful!';
+                    echo "<script>alert('Registration successful!'); window.location.href = 'loginRegister.php';</script>"; // Redirect with success message
+                    exit;
+                } else {
+                    $_SESSION['message'] = 'Query failed: ' . mysqli_error($conn);
+                }
             }
         }
     }
@@ -46,15 +52,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Display messages if any
 if (isset($_SESSION['message'])) {
-    echo '
-    <div class="message">
-        <span>' . $_SESSION['message'] . '</span>
-        <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
-    </div>
-    ';
+    echo "<script>alert('" . $_SESSION['message'] . "');</script>";
     unset($_SESSION['message']);
 }
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -67,6 +70,30 @@ if (isset($_SESSION['message'])) {
     <link rel="stylesheet" href="assets/css/Register.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>WalkOn - Register</title>
+
+    <header class="header" id="header">
+        <nav class="nav container">
+            <div class="navLOGO">
+                <a href="index.php" class="nav__logo">
+                    <img src="assets/img/logoSHOES.png" alt="Logo of Shoes">
+                </a>
+                <h1 class="nav__logo-title">Walk On</h1>
+            </div>
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="loginRegister.php" class="nav__link">LOG IN</a>
+                    </li>
+                </ul>
+                <div class="nav__close" id="nav-close">
+                    <i class="ri-close-line"></i>
+                </div>
+            </div>
+            <div class="nav__toggle" id="nav-toggle">
+                <i class="ri-apps-2-fill"></i>
+            </div>
+        </nav>
+    </header>
     <style>
         body {
             display: flex;
