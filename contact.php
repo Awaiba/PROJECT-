@@ -8,117 +8,43 @@
       <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
       <link rel="stylesheet" href="assets/css/contactCss.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
       <title>WalkOn | Contacts</title>
       <header class="header" id="header">
 
-         <nav class="nav container">
-            <div class="navLOGO">
-               <a href="index.html" class="nav__logo">
-                  <img src="assets/img/logoSHOES.png" alt="Logo of Shoes">
-               </a>
-               <h1 class="nav__logo-title">Walk On</h1>
-            </div>
-            <div class="nav__menu" id="nav-menu">
-               <ul class="nav__list">
-                  <li class="nav__item">
-                     <a href="index.html" class="nav__link">HOME</a>
-                  </li>
+      <nav class="nav container">
+    <div class="navLOGO">
+        <a href="index.php" class="nav__logo">
+            <img src="assets/img/logoSHOES.png" alt="Logo of Shoes">
+        </a>
+        <h1 class="nav__logo-title">Walk On</h1>
+    </div>
+    <div class="nav__menu" id="nav-menu">
+        <ul class="nav__list">
+            <li class="nav__item">
+                <a href="index.php" class="nav__link">HOME</a>
+            </li>
+            <li class="nav__item">
+                <a href="product.php" class="nav__link">PRODUCTS</a>
+            </li>
+            <li class="nav__item">
+                <a href="contact.php" class="nav__link"><b>CONTACT</b></a>
+            </li>
+            <li class="nav__item">
+                <a href="loginRegister.php" class="nav__link">LOG IN</a>
+            </li>
+        </ul>
+        <div class="nav__close" id="nav-close">
+            <i class="ri-close-line"></i>
+        </div>
+    </div>
+    <div class="nav__toggle" id="nav-toggle">
+        <i class="ri-apps-2-fill"></i>
+    </div>
+</nav>
 
-                  <li class="nav__item">
-                     <a href="product.html" class="nav__link">PRODUCTS</a>
-                  </li>
-
-                  <li class="nav__item">
-                     <a href="contact.html" class="nav__link">CONTACT</a>
-                  </li>
-                  
-                  <li class="nav__item">
-                     <a href="loginRegister.html" class="nav__link">LOG IN</a>
-                  </li>
-               </ul>
-               <div class="nav__close" id="nav-close">
-                  <i class="ri-close-line"></i>
-               </div>
-            </div>
-            <div class="nav__toggle" id="nav-toggle">
-               <i class="ri-apps-2-fill"></i>
-            </div>
-         </nav>
          
       </header>
-      <style>
-        * {
-            --body-font: "Poppins", sans-serif;
-        }
-        .body {
-            font-family: var(--body-font);
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-
-        header {
-            background-color: #007BFF;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-
-        section {
-            padding: 20px;
-            background-color: white;
-            margin: 20px;
-            border-radius: 8px;
-        }
-
-        .container {
-            width: 100%;
-            margin: 0 auto;
-        }
-
-        h1, h2 {
-            text-align: center;
-        }
-
-        .product-image {
-            width: 100%; 
-            max-width: 300px; 
-            border-radius: 8px;
-            margin: 0 auto; 
-            display: block; 
-        }
-
-        .product-description {
-            font-display: center;
-        }
-
-        .price {
-            font-size: 24px;
-            color: #2470c2;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .buy-btn {
-            display: block;
-            width: 100%;
-            background-color: #007BFF;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            border-radius: 5px;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-        }
-
-        .buy-btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
    </head>
-   
    <body>
       
     <main>
@@ -129,31 +55,7 @@
             <button class="contactbannerbutton">
                 <a href="product.html" >E-mail</a>
             </button>
-        </section>
-
-        <section class="body">
-    
-            <section class="container">
-                <h2 id="product-name">Product Name</h2>
-                <img id="product-image" src="" alt="Product Image" class="product-image">
-                <p id="product-description">Product Description</p>
-                <p class="price" id="product-price">Product Price</p>
-                <button class="buy-btn">Buy Now</button>
-            </section>
-        
-        
-            <script>
-                const params = new URLSearchParams(window.location.search);
-                const productName = params.get('name');
-                const productImage = params.get('image');
-                const productPrice = params.get('price');
-                const productDescription = params.get('description');
-                        document.getElementById('product-name').innerText = decodeURIComponent(productName);
-                document.getElementById('product-image').src = decodeURIComponent(productImage);
-                document.getElementById('product-price').innerText = decodeURIComponent(productPrice);
-                document.getElementById('product-description').innerText = decodeURIComponent(productDescription);
-            </script>
-        
+            
         </section>
         <section class="footer">
          <div class="footer-info">
@@ -205,9 +107,16 @@
       </section>
       <div class="end-text">
          <p>Copyright © @2025. All Right Reserved. Designed By Anish Kumar Lama, Sanisha Sapkota.</p>
-      </div>      
+      </div>
+
+      
    </section>
+
+
+
+
     </main>
+        
       </body>
       </head>
       </html>

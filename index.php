@@ -20,14 +20,12 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
       <title>Walk On</title>
-   </head>
-   <body>
       <!--==================== HEADER ====================-->
       <header class="header" id="header">
 
          <nav class="nav container">
             <div class="navLOGO">
-               <a href="index.html" class="nav__logo">
+               <a href="index.php" class="nav__logo">
                   <img src="assets/img/logoSHOES.png" alt="Logo of Shoes">
                </a>
                <h1 class="nav__logo-title">Walk On</h1>
@@ -35,19 +33,19 @@
             <div class="nav__menu" id="nav-menu">
                <ul class="nav__list">
                   <li class="nav__item">
-                     <a href="index.html" class="nav__link"><b>HOME</b></a>
+                     <a href="index.php" class="nav__link"><b>HOME</b></a>
                   </li>
 
                   <li class="nav__item">
-                     <a href="product.html" class="nav__link">PRODUCTS</a>
+                     <a href="product.php" class="nav__link">PRODUCTS</a>
                   </li>
 
                   <li class="nav__item">
-                     <a href="contact.html" class="nav__link">CONTACT</a>
+                     <a href="contact.php" class="nav__link">CONTACT</a>
                   </li>
                   
                   <li class="nav__item">
-                     <a href="loginRegister.html" class="nav__link">Login</a>
+                     <a href="loginRegister.php" class="nav__link">Login</a>
                   </li>
                </ul>
 
@@ -64,6 +62,9 @@
          </nav>
          
       </header>
+   </head>
+   <body>
+      
 
       <!--==================== MAIN ====================-->
       <main>
