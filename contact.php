@@ -10,7 +10,9 @@ if (!isset($_SESSION['username'])) {
 $username = $_SESSION['username']; // Assuming username is stored in session
 
 // Other database checks, if required, can be placed here
-?><!DOCTYPE html>
+?>
+
+<!DOCTYPE html>
    <html lang="en">
    <head>
       <meta charset="UTF-8">
