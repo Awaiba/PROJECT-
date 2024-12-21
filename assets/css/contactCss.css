@@ -1,38 +1,25 @@
-/*=============== GOOGLE FONTS ===============*/
 @import url("https://fonts.googleapis.com/css2?family=Poppins&family=Syncopate:wght@400;700&display=swap");
 
-/*=============== VARIABLES CSS ===============*/
 :root {
   --header-height: 3.5rem;
-
-  /*========== Colors ==========*/
-  /*Color mode HSL(hue, saturation, lightness)*/
   --black-color: hsl(0, 0%, 5%);
   --black-color-light: hsl(0, 0%, 70%);
   --white-color: hsl(0, 0%, 100%);
   --title-color: hsl(0, 0%, 5%);
   --text-color: hsl(0, 0%, 55%);
   --body-color: hsl(0, 0%, 96%);
-
-  /*========== Font and typography ==========*/
-  /*.5rem = 8px | 1rem = 16px ...*/
   --body-font: "Poppins", sans-serif;
   --second-font: "Syncopate", sans-serif;
   --biggest-font-size: 2.5rem;
   --h2-font-size: 1.25rem;
   --normal-font-size: .938rem;
   --small-font-size: .813rem;
-
-  /*========== Font weight ==========*/
   --font-regular: 400;
   --font-bold: 700;
-
-  /*========== z index ==========*/
   --z-tooltip: 10;
   --z-fixed: 100;
 }
 
-/*========== Responsive typography ==========*/
 @media screen and (min-width: 1152px) {
   :root {
     --biggest-font-size: 4.5rem;
@@ -42,7 +29,6 @@
   }
 }
 
-/*=============== BASE ===============*/
 * {
   box-sizing: border-box;
   padding: 0;
@@ -70,13 +56,11 @@ img {
   height: auto;
 }
 
-/*=============== REUSABLE CSS CLASSES ===============*/
 .container {
   max-width: 1120px;
   margin-inline: 1.5rem;
 }
 
-/*=============== HEADER & NAV ===============*/
 
 
 .header {
@@ -121,8 +105,8 @@ img {
 }
 
 .nav__item {
-  width: 120px; /* Adjust based on your layout */
-  text-align: center; /* Center align the text within the item */
+  width: 120px; 
+  text-align: center;
 }
 .nav__link {
   font-weight: normal;
@@ -141,7 +125,6 @@ img {
   cursor: pointer;
 }
 
-/* Navigation for mobile devices */
 @media screen and (max-width: 1023px) {
   .nav__menu {
     position: fixed;
@@ -169,19 +152,16 @@ img {
   top: 1.125rem;
   right: 1.5rem;
 }
-/* Show menu */
 .show-menu {
   right: 0;
 
 }
 
-/* Add shadow header */
 .shadow-header {
   box-shadow: 0 1px 16px hsla(0, 0%, 0%, .1);
 }
 
 
-/*=============== HOME Slider ===============*/
 .container{
   padding: 2rem;
 }
@@ -204,9 +184,6 @@ img {
   scroll-snap-align: start;
   object-fit: cover;
 }
-
-
-/*=============== HOME ===============*/
 
 .home__container {
   position: relative;
@@ -236,7 +213,7 @@ img {
   margin-bottom: 2rem;
 }
 .home__button {
-  background: linear-gradient(to bottom right, #008cff, #e100ff); /* Updated to apply gradient directly */
+  background: linear-gradient(to bottom right, #008cff, #e100ff); 
   padding: 1rem 3rem;
   border: none;
   color: #ffffff;
@@ -307,7 +284,6 @@ img {
 }
 
 
-/* Swiper class */
 .swiper {
   margin-inline: initial;
 }
@@ -333,8 +309,6 @@ img {
   margin: 0 2px;
 }
 
-/*=============== BREAKPOINTS ===============*/
-/* For small devices */
 
 @media screen and (max-width: 320px) {
   .container {
@@ -350,7 +324,6 @@ img {
   
 }
 
-/* For medium devices */
 @media screen and (min-width: 576px) {
   .nav__menu {
     width: 60%;
@@ -365,7 +338,6 @@ img {
 
 }
 
-/* For large devices */
 @media screen and (min-width: 1023px) {
   .nav {
     height: calc(var(--header-height) + 2rem);
@@ -450,7 +422,6 @@ img {
   transition: all .42s ease;
 }
 
-/*=============== BANNER ===============*/
 
 .section-m1 {
   margin: 40PX 0;
@@ -470,17 +441,13 @@ img {
   padding: 40px 0 40px 0;
 }
 
-/*=============== Product LOGOS ===============*/
 .brand-logo {
   display: block;       
   margin: 5px auto;    
   width: 100px;         
-  height: auto;         /* Maintain aspect ratio */
+  height: auto;      
 }
 
-
-
-/*=============== BANNER ===============*/
 
 .section-m1 {
   margin: 40PX 0;
@@ -499,11 +466,6 @@ img {
   background-color: rgb(58, 58, 58);
   padding: 40px 0 40px 0;
 }
-
-
-
-
-/*=============== FOOTER ===============*/
 .footer {
   background-color: rgb(37, 37, 37);
   color: #ddd;
@@ -540,11 +502,6 @@ img {
   font-size: 12px;
 
 }
-
-
-
-/*=============== CONTACT PAGE (BANNER)===============*/
-
 #Contactbanner {
     font-size: 2rem;
     font-family: var(--second-font);

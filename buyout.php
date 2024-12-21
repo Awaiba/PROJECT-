@@ -1,15 +1,13 @@
 <?php
 session_start();
 
-// Redirect to login page if not logged in or role is not 'user'
 if (!isset($_SESSION['username'])) {
-    header('Location: loginRegister.php'); // Redirect if not logged in
+    header('Location: loginRegister.php'); 
     exit;
 }
 
-$username = $_SESSION['username']; // Assuming username is stored in session
+$username = $_SESSION['username']; 
 
-// Other database checks, if required, can be placed here
 ?><!DOCTYPE html>
    <html lang="en">
    <head>
@@ -99,7 +97,7 @@ $username = $_SESSION['username']; // Assuming username is stored in session
         .product-image {
             width: 100%; 
             max-width: 300px; 
-            height: auto; /* Maintains aspect ratio */
+            height: auto; 
             border-radius: 8px;
             margin: 0 auto; 
             display: block; 
@@ -160,20 +158,17 @@ $username = $_SESSION['username']; // Assuming username is stored in session
         </section>
 
         <script>
-            // Fetch product details from URL parameters
             const params = new URLSearchParams(window.location.search);
             const productName = params.get('name');
             const productImage = params.get('image');
             const productPrice = params.get('price');
 
-            // Populate the product details on the page
             document.getElementById('product-name').innerText = decodeURIComponent(productName);
             document.getElementById('product-image').src = decodeURIComponent(productImage);
             document.getElementById('product-price').innerText = decodeURIComponent(productPrice);
 
-            // Redirect to checkout when button is clicked
             document.querySelector('.buy-btn').addEventListener('click', function() {
-                window.location.href = 'checkoutform.php'; // Redirect to checkout form
+                window.location.href = 'checkoutform.php'; 
             });
         </script>
     </main>

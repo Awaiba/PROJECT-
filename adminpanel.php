@@ -1,54 +1,45 @@
 <?php
 session_start();
 
-// Redirect to login page if not logged in or role is not 'admin'
 if ($_SESSION['role'] !== 'admin') {
-    header('Location: loginRegister.php'); // Redirect if not an admin
+    header('Location: loginRegister.php'); 
     exit;
 }
 
-// CSRF Token validation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token'])) {
     die('Invalid CSRF token.');
 }
 
-// Database connection using PDO
-$host = 'localhost'; // or your database host
-$dbname = 'walkon'; // your database name
-$username = 'root'; // your database username
-$password = ''; // your database password (empty if no password)
+$host = 'localhost'; 
+$dbname = 'walkon'; 
+$username = 'root';
+$password = ''; 
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Set error mode to exception
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
 } catch (PDOException $e) {
-    // If connection fails, handle the error
     die("Database connection failed: " . $e->getMessage());
 }
 
-// Fetching data securely using prepared statements
 function fetchData($pdo, $query, $params = []) {
     $stmt = $pdo->prepare($query);
     $stmt->execute($params);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// Get admin user information from session
-$username = $_SESSION['username']; // Get the username from session
+$username = $_SESSION['username']; 
 
 $query = "SELECT username FROM users WHERE username = ? AND role = 'admin'";
 $user = fetchData($pdo, $query, [$username]);
 
-// Check if admin user exists
 if (empty($user)) {
-    // Handle the case where no admin user is found
     header('Location: loginRegister.php');
     exit;
 }
 
-$fullName = htmlspecialchars($user[0]['username'], ENT_QUOTES, 'UTF-8'); // Sanitize admin username
+$fullName = htmlspecialchars($user[0]['username'], ENT_QUOTES, 'UTF-8'); 
 
-// Fetching product, user, and order data
 $productQuery = "SELECT * FROM product";
 $productResult = fetchData($pdo, $productQuery);
 

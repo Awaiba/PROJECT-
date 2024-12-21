@@ -1,17 +1,16 @@
 <?php
-session_start(); // Start session at the beginning
+session_start(); 
 
-// Database connection
-$servername = "localhost"; // Update as needed
-$username = "root"; // Update as needed
-$password = ""; // Update as needed
-$dbname = "walkon"; // Update as needed
+$servername = "localhost"; 
+$username = "root"; 
+$password = ""; 
+$dbname = "walkon"; 
 
 try {
     $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $thank_you_message = ''; // Initialize the thank you message
+    $thank_you_message = ''; 
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $name = $_POST['name'];
@@ -20,21 +19,17 @@ try {
         $address = $_POST['address'];
         $district = $_POST['district'];
         $street = $_POST['street'];
-        $cod = isset($_POST['cod']) ? 'COD' : 'Online Payment'; // COD or Online Payment
+        $cod = isset($_POST['cod']) ? 'COD' : 'Online Payment'; 
 
-        // Assuming product_id = 1, adjust as necessary
         $product_id = 1; 
-        $quantity = 1; // Default quantity, you can expand as per your requirements
-
-        // Get user information from session
-        $username = $_SESSION['username']; // Get the username from session
+        $quantity = 1; 
+        $username = $_SESSION['username']; 
 
         $query = "SELECT username FROM users WHERE username = ?";
         $stmt = $pdo->prepare($query);
         $stmt->execute([$username]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Fetch product price
         $productStmt = $pdo->prepare("SELECT price FROM product WHERE product_id = ?");
         $productStmt->execute([$product_id]);
         $product = $productStmt->fetch();
@@ -42,11 +37,8 @@ try {
 
         $total_price = $product_price * $quantity;
 
-        // Insert into user_orders
         $stmt = $pdo->prepare("INSERT INTO user_orders (user_id, product_id, quantity, total_price, name, phone, email, address, district, street, payment_method) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([null, $product_id, $quantity, $total_price, $name, $phone, $email, $address, $district, $street, $cod]);
-
-        // Show thank you message after successful form submission
         $thank_you_message = '<div class="thank-you-message">
                                 <h2>Thank You for Your Purchase!</h2>
                                 <p>We appreciate your order. Our team will contact you soon.</p>
@@ -65,7 +57,6 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Walk On - Checkout</title>
 
-    <!--=============== STYLES ===============-->
     <link rel="stylesheet" href="assets/css/styles.css">
     
     <header class="header" id="header">
@@ -99,12 +90,10 @@ try {
                     </li>
                 </ul>
 
-                <!-- Close Button -->
                 <div class="nav__close" id="nav-close">
                     <i class="ri-close-line"></i>
                 </div>
             </div>
-            <!-- Toggle Button -->
             <div class="nav__toggle" id="nav-toggle">
                 <i class="ri-apps-2-fill"></i>
             </div>
@@ -173,8 +162,8 @@ try {
         }
 
         .input-group textarea {
-            height: 100px; /* Optional: Adjust height for textarea */
-            resize: none; /* Optional: Prevent resizing */
+            height: 100px; 
+            resize: none; 
         }
 
         .input-group .checkbox-group {

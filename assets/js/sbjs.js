@@ -1,4 +1,3 @@
-// Function to filter products based on selected criteria
 function filterProducts() {
     const selectedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked')).map(cb => cb.value);
     const selectedBrands = Array.from(document.querySelectorAll('input[name="brand"]:checked')).map(cb => cb.value);
@@ -44,7 +43,6 @@ function filterProducts() {
     });
 }
 
-// Add event listeners to filter checkboxes
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('input[name="category"], input[name="brand"], input[name="color"], input[name="price"]').forEach(checkbox => {
         checkbox.addEventListener('change', filterProducts);

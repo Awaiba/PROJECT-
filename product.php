@@ -1,15 +1,12 @@
 <?php
 session_start();
 
-// Redirect to login page if not logged in or role is not 'user'
 if (!isset($_SESSION['username'])) {
-    header('Location: loginRegister.php'); // Redirect if not logged in
+    header('Location: loginRegister.php'); 
     exit;
 }
 
-$username = $_SESSION['username']; // Assuming username is stored in session
-
-// Other database checks, if required, can be placed here
+$username = $_SESSION['username']; 
 ?>
 <!DOCTYPE html>
    <html lang="en">
@@ -57,12 +54,10 @@ $username = $_SESSION['username']; // Assuming username is stored in session
                     </li>
                 </ul>
       
-               <!-- Close Button -->
                <div class="nav__close" id="nav-close">
                   <i class="ri-close-line"></i>
                </div>
             </div>
-            <!-- Toggle Button -->
             <div class="nav__toggle" id="nav-toggle">
                <i class="ri-apps-2-fill"></i>
             </div>
@@ -70,16 +65,11 @@ $username = $_SESSION['username']; // Assuming username is stored in session
       </header>
    </head>
    <body>
-      <!--==================== HEADER ====================-->
-      
-      <!--==================== MAIN ====================-->
-      <main>
+            <main>
             <section class="productandsidebar">
             <aside class="filter-sidebar">
                 <h2>Filter Products</h2>
-    
-                <!-- Category Filter -->
-                <div class="filter-category">
+                    <div class="filter-category">
                     <h3>Category</h3>
                     <ul>
                         <li><input type="checkbox" id="men" name="category" value="men" aria-label="Filter Men's Shoes"><label for="men">Men's Shoes</label></li>
@@ -87,9 +77,7 @@ $username = $_SESSION['username']; // Assuming username is stored in session
                         <li><input type="checkbox" id="kids" name="category" value="kids" aria-label="Filter Kids' Shoes"><label for="kids">Kids' Shoes</label></li>
                     </ul>
                 </div>
-    
-                <!-- Size Filter -->
-                <div class="filter-size">
+                    <div class="filter-size">
                     <h3>Size</h3>
                     <ul>
                         <li><input type="checkbox" id="size-6" name="size" value="6" aria-label="Filter size 6"><label for="size-6">6</label></li>
@@ -99,9 +87,7 @@ $username = $_SESSION['username']; // Assuming username is stored in session
                         <li><input type="checkbox" id="size-10" name="size" value="10" aria-label="Filter size 10"><label for="size-10">10</label></li>
                     </ul>
                 </div>
-    
-                <!-- Color Filter -->
-                <div class="filter-color">
+                    <div class="filter-color">
                     <h3>Color</h3>
                     <ul>
                         <li><input type="checkbox" id="black" name="color" value="black" aria-label="Filter Black color"><label for="black">Black</label></li>
@@ -111,9 +97,7 @@ $username = $_SESSION['username']; // Assuming username is stored in session
                         <li><input type="checkbox" id="grey" name="color" value="grey" aria-label="Filter Grey color"><label for="grey">Grey</label></li>
                     </ul>
                 </div>
-    
-                <!-- Brand Filter -->
-                <div class="filter-brand">
+                    <div class="filter-brand">
                     <h3>Brand</h3>
                     <ul>
                         <li><input type="checkbox" id="nike" name="brand" value="nike" aria-label="Filter Nike"><label for="nike">Nike</label></li>
@@ -122,16 +106,12 @@ $username = $_SESSION['username']; // Assuming username is stored in session
                         <li><input type="checkbox" id="reebok" name="brand" value="reebok" aria-label="Filter Reebok"><label for="reebok">Reebok</label></li>
                     </ul>
                 </div>
-    
-                <!-- Price Filter -->
-                <div class="filter-price">
+                    <div class="filter-price">
                     <h3>Price</h3>
                     <input type="range" id="price-range" name="price" min="0" max="10000" value="250" step="10" aria-label="Filter Price Range">
                     <label for="price-range">Price: $<span id="price-min">0</span> - $<span id="price-max">10000</span></label>
                 </div>
-    
-                <!-- Material Filter -->
-                <div class="filter-material">
+                    <div class="filter-material">
                     <h3>Material</h3>
                     <ul>
                         <li><input type="checkbox" id="leather" name="material" value="leather" aria-label="Filter Leather"><label for="leather">Leather</label></li>
@@ -140,19 +120,12 @@ $username = $_SESSION['username']; // Assuming username is stored in session
                         <li><input type="checkbox" id="canvas" name="material" value="canvas" aria-label="Filter Canvas"><label for="canvas">Canvas</label></li>
                     </ul>
                 </div>
-    
-                <!-- Reset Button -->
-                <div class="filter-reset">
+                    <div class="filter-reset">
                     <button type="button" id="reset-filters">Reset Filters</button>
                 </div>
             </aside>
             </section>
-
-
-            <!-- PRODUCT SECTION -->
             <section id="product1" class="section1">
-
-                <!-- PRODUCT SECTION JORDAN -->
                 <div class="jordan">
    <div class="pro-container">
       <div class="pro" data-category="men" data-brand="Jordan" data-price="6000" data-material="leather" data-color="blue" data-size="9">
@@ -237,19 +210,14 @@ $username = $_SESSION['username']; // Assuming username is stored in session
       </div>
    </div>
 </div>
-
 <script>
    function redirectToBuyout(name, image, price, color, material, size) {
       const url = `buyout.php?name=${encodeURIComponent(name)}&image=${encodeURIComponent(image)}&price=${encodeURIComponent(price)}&color=${encodeURIComponent(color)}&material=${encodeURIComponent(material)}&size=${encodeURIComponent(size)}`;
       window.location.href = url;
    }
 </script>
-
-   
                <br><br> 
-   
-               <!-- PRODUCT SECTION PUMA -->
-               <div class="puma">
+                  <div class="puma">
    <div class="pro-container">
       <div class="pro" data-category="men" data-brand="puma" data-price="7500" data-material="leather" data-color="green" data-size="7">
          <img src="assets/img/PUMA/PUMA-x-LAMELO-BALL-LaFrancé-Assist-Men's-Shoes.png" alt="PUMA LAMELO BALL LaFrancé Assist Men's Shoes" class="product-image">
@@ -340,13 +308,8 @@ $username = $_SESSION['username']; // Assuming username is stored in session
       window.location.href = url;
    }
 </script>
-
-   
                <br><br> 
-   
-   
-                <!-- PRODUCT SECTION CONVERSE -->
-                <div class="Converse">
+                   <div class="Converse">
    <div class="pro-container">
       <div class="pro" data-category="men" data-brand="Converse" data-price="5000" data-material="leather" data-color="black" data-size="9">
          <img src="assets/img/CONVERSE/Chuck 70 Canvas.png" alt="Converse Chuck 70 Canvas shoe" class="product-image">
@@ -437,15 +400,8 @@ $username = $_SESSION['username']; // Assuming username is stored in session
       window.location.href = url;
    }
 </script>
-
-   
-               <br><br> 
-   
-               
-   
-   
-               <!-- PRODUCT SECTION ADIDAS -->
-               <div class="adidas">
+   <br><br>                
+   <div class="adidas">
    <div class="pro-container">
       <div class="pro" data-category="men" data-brand="adidas" data-price="5000" data-material="leather" data-color="orange" data-size="9">
          <img src="assets/img/ADIDAS/handball-spezial-shoes.jpeg" alt="handball spezial shoes" class="product-image">
@@ -535,16 +491,12 @@ $username = $_SESSION['username']; // Assuming username is stored in session
       const url = `buyout.php?name=${encodeURIComponent(name)}&image=${encodeURIComponent(image)}&price=${encodeURIComponent(price)}&color=${encodeURIComponent(color)}&material=${encodeURIComponent(material)}&size=${encodeURIComponent(size)}`;
       window.location.href = url;
    }
-</script>
-
-               <br><br> 
-            </section>
-        </main>
-   
-       
+   </script>
+   <br><br> 
       </section>
       </main>
-
+   </section>
+   </main>
       <script src="assets/js/swiper-bundle.min.js"></script>
       <script src="assets/js/main.js"></script>
       <script src="assets/js/cart.js"></script>

@@ -4,6 +4,6 @@ document.querySelector('.register-form').addEventListener('submit', function(e) 
 
     if (password !== confirmPassword) {
         alert('Passwords do not match!');
-        e.preventDefault(); // Prevent form submission
+        e.preventDefault(); 
     }
 });

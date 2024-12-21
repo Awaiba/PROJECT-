@@ -1,47 +1,40 @@
 <?php
 session_start();
 
-// Redirect to login page if not logged in or role is not 'admin'
 if ($_SESSION['role'] !== 'admin') {
-    header('Location: loginRegister.php'); // Redirect if not an admin
+    header('Location: loginRegister.php'); 
     exit;
 }
 
-// CSRF Token Generation
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-// Include database connection
-$host = 'localhost'; // or your database host
-$dbname = 'walkon'; // your database name
-$username = 'root'; // your database username
-$password = ''; // your database password (empty if no password)
+$host = 'localhost'; 
+$dbname = 'walkon'; 
+$username = 'root'; 
+$password = ''; 
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Set error mode to exception
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    // If connection fails, handle the error
     die("Database connection failed: " . $e->getMessage());
 }
 
-// Get admin user information from session
-$username = $_SESSION['username']; // Get the username from session
+$username = $_SESSION['username']; 
 
 $query = "SELECT username FROM users WHERE username = ? AND role = 'admin'";
 $stmt = $pdo->prepare($query);
 $stmt->execute([$username]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Check if admin user exists
 if (!$user) {
-    // Handle the case where no admin user is found
     header('Location: loginRegister.php');
     exit;
 }
 
-$fullName = htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8'); // Sanitize admin username
+$fullName = htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8'); 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -123,7 +116,6 @@ $fullName = htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8'); // Sanitiz
             </div>
         </section>
 
-        <!-- BANNER SECTION -->
         <section id="Contactbanner" class="section-01">
             <h1>BUY 1 GET 20% OFF</h1>
             <p>On Winter Collection</p>
@@ -132,7 +124,6 @@ $fullName = htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8'); // Sanitiz
             </button>
         </section>
 
-        <!-- FOOTER -->
         <section class="footer">
             <div class="footer-info">
                 <div class="first-info">

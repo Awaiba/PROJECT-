@@ -1,33 +1,27 @@
 <?php
 session_start();
 
-// Redirect to login page if not logged in or role is not 'user'
 if (!isset($_SESSION['username'])) {
-    header('Location: loginRegister.php'); // Redirect if not logged in
+    header('Location: loginRegister.php'); 
     exit;
 }
 
-$username = $_SESSION['username']; // Assuming username is stored in session
+$username = $_SESSION['username'];
 
-// Other database checks, if required, can be placed here
-// Include database connection
-$host = 'localhost'; // or your database host
-$dbname = 'walkon'; // your database name
-$username = 'root'; // your database username
-$password = ''; // your database password (empty if no password)
+$host = 'localhost';
+$dbname = 'walkon'; 
+$username = 'root'; 
+$password = ''; 
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Set error mode to exception
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
 } catch (PDOException $e) {
-    // If connection fails, handle the error
     die("Database connection failed: " . $e->getMessage());
 }
 
-// Get user information from session
-$user_id = $_SESSION['user_id']; // Get the user ID from session
+$user_id = $_SESSION['user_id'];
 
-// Fetch all orders for the user
 $query = "SELECT user_orders.order_id, user_orders.quantity, user_orders.total_price, user_orders.name, user_orders.phone, user_orders.email, 
                user_orders.address, user_orders.district, user_orders.street, user_orders.payment_method, user_orders.created_at, 
                product.name AS product_name, product.brand, product.price, product.material, product.color, product.size 
@@ -41,7 +35,6 @@ $stmt->execute();
 $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if ($orders) {
-    // Display all orders in a table
     echo "<h1>Order Details</h1>";
     echo "<table border='1'>";
     echo "<tr><th>Order ID</th><th>Product Name</th><th>Brand</th><th>Material</th><th>Color</th><th>Size</th><th>Price</th><th>Quantity</th><th>Total Price</th><th>Customer Name</th><th>Phone</th><th>Email</th><th>Address</th><th>District</th><th>Street</th><th>Payment Method</th><th>Ordered On</th></tr>";
@@ -122,12 +115,10 @@ if ($orders) {
                     </li>
                 </ul>
 
-                <!-- Close Button -->
                 <div class="nav__close" id="nav-close">
                     <i class="ri-close-line"></i>
                 </div>
             </div>
-            <!-- Toggle Button -->
             <div class="nav__toggle" id="nav-toggle">
                 <i class="ri-apps-2-fill"></i>
             </div>

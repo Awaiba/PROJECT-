@@ -1,16 +1,12 @@
 <?php
-// Start session to store messages
 session_start();
 
-// Include database connection
 include 'dbConnection.php';
 
-// Function to sanitize input and check for errors
 function sanitizeInput($conn, $input) {
     return mysqli_real_escape_string($conn, trim($input));
 }
 
-// Check if form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = sanitizeInput($conn, $_POST['full-name']);
     $phone_no = sanitizeInput($conn, $_POST['phone-no']);
@@ -18,23 +14,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = sanitizeInput($conn, $_POST['password']);
     $cpassword = sanitizeInput($conn, $_POST['confirm-password']);
 
-    // Check if user already exists
     $select = mysqli_query($conn, "SELECT * FROM `users` WHERE email = '$email'");
     if (mysqli_num_rows($select) > 0) {
         $_SESSION['message'] = 'User already exists!';
     } else {
-        // Check if passwords match
         if ($password !== $cpassword) {
             $_SESSION['message'] = 'Passwords do not match!';
         } else {
-            // Encrypt password
             $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-            // Insert user data into the database
             $query = "INSERT INTO `users` (full_name, phone_no, email, password) VALUES ('$name', '$phone_no', '$email', '$hashed_password')";
             if (mysqli_query($conn, $query)) {
                 $_SESSION['message'] = 'Registered successfully!';
-                header('Location: loginRegister.php'); // Redirect to login page
+                header('Location: loginRegister.php'); 
                 exit;
             } else {
                 $_SESSION['message'] = 'Query failed: ' . mysqli_error($conn);
@@ -43,7 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Display messages if any
 if (isset($_SESSION['message'])) {
     echo '
     <div class="message">

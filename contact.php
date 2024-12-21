@@ -1,15 +1,13 @@
 <?php
 session_start();
 
-// Redirect to login page if not logged in or role is not 'user'
 if (!isset($_SESSION['username'])) {
-    header('Location: loginRegister.php'); // Redirect if not logged in
+    header('Location: loginRegister.php'); 
     exit;
 }
 
-$username = $_SESSION['username']; // Assuming username is stored in session
+$username = $_SESSION['username'];
 
-// Other database checks, if required, can be placed here
 ?>
 
 <!DOCTYPE html>
@@ -69,7 +67,6 @@ $username = $_SESSION['username']; // Assuming username is stored in session
    <body>
       
     <main>
-      <!-- BANNER SECTION -->
         <section id="Contactbanner" class="section-01">
             <h1>Walk On</h1>
             <p>Footware For Everyone</p>
@@ -128,16 +125,10 @@ $username = $_SESSION['username']; // Assuming username is stored in session
       </section>
       <div class="end-text">
          <p>Copyright © @2025. All Right Reserved. Designed By Anish Kumar Lama, Sanisha Sapkota.</p>
-      </div>
-
-      
-   </section>
-
-
-
-
+      </div>    
+    </section>
     </main>
         
-      </body>
-      </head>
-      </html>
+</body>
+</head>
+</html>

@@ -1,46 +1,35 @@
 <?php
 session_start();
-
-// Include database connection
 include 'dbConnection.php';
 
-// Function to sanitize input and prevent SQL injection
 function sanitizeInput($input) {
-    global $conn; // Use the global connection
+    global $conn; 
     return mysqli_real_escape_string($conn, trim($input));
 }
-
-// Check if form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = sanitizeInput($_POST['username']);
     $phone_no = sanitizeInput($_POST['phone-no']);
     $email = sanitizeInput($_POST['email']);
     $password = sanitizeInput($_POST['password']);
     $cpassword = sanitizeInput($_POST['confirm-password']);
-    $role = sanitizeInput($_POST['role']); // Ensure role is sanitized
-
-    // Check if an admin already exists
+    $role = sanitizeInput($_POST['role']); 
     $checkAdminQuery = mysqli_query($conn, "SELECT * FROM `users` WHERE `role` = 'admin' LIMIT 1");
     if (mysqli_num_rows($checkAdminQuery) > 0 && $role === 'admin') {
         $_SESSION['message'] = 'An admin already exists. Only one admin is allowed.';
     } else {
-        // Check if user already exists
         $select = mysqli_query($conn, "SELECT * FROM `users` WHERE email = '$email'");
         if (mysqli_num_rows($select) > 0) {
             $_SESSION['message'] = 'User already exists!';
         } else {
-            // Check if passwords match
             if ($password !== $cpassword) {
                 $_SESSION['message'] = 'Passwords do not match!';
             } else {
-                // Encrypt password
                 $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-                // Insert user data into the database
                 $query = "INSERT INTO `users` (username, phone_no, email, password, role) VALUES ('$name', '$phone_no', '$email', '$hashed_password', '$role')";
                 if (mysqli_query($conn, $query)) {
                     $_SESSION['message'] = 'Registration successful!';
-                    echo "<script>alert('Registration successful!'); window.location.href = 'loginRegister.php';</script>"; // Redirect with success message
+                    echo "<script>alert('Registration successful!'); window.location.href = 'loginRegister.php';</script>"; 
                     exit;
                 } else {
                     $_SESSION['message'] = 'Query failed: ' . mysqli_error($conn);
@@ -50,7 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Display messages if any
 if (isset($_SESSION['message'])) {
     echo "<script>alert('" . $_SESSION['message'] . "');</script>";
     unset($_SESSION['message']);
@@ -116,9 +104,9 @@ if (isset($_SESSION['message'])) {
         .register-form {
             display: flex;
             flex-direction: column;
-            width: 400px; /* Set width to 400px */
+            width: 400px; 
             gap: 15px;
-            margin: 0; /* Center the form */
+            margin: 0; 
         }
 
         .input-group {

@@ -1,49 +1,39 @@
 <?php
-session_start(); // Start session for storing messages
-
-// Include database connection
-include 'dbConnection.php'; // Make sure this is included
-
-// Function to sanitize input
+session_start();
+include 'dbConnection.php'; 
 function sanitizeInput($pdo, $input) {
-    return htmlspecialchars(trim($input)); // Basic sanitization
+    return htmlspecialchars(trim($input)); 
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $usernameOrEmail = sanitizeInput($pdo, $_POST['username']);
     $password = sanitizeInput($pdo, $_POST['password']);
     
-    // Query to check if user exists
     $query = "SELECT id, username, phone_no, email, password, role FROM users WHERE username = ? OR email = ?";
     $stmt = $pdo->prepare($query);
     $stmt->execute([$usernameOrEmail, $usernameOrEmail]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
     if ($user) {
-        // Verify the password
         if (password_verify($password, $user['password'])) {
-            // User exists and password is correct, start session and redirect
             $_SESSION['id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
-            $_SESSION['role'] = $user['role']; // Store the user role in session
+            $_SESSION['role'] = $user['role']; 
             
-            // Redirect based on user role
             if ($user['role'] === 'admin') {
-                header('Location: adminDashboard.php'); // Redirect to admin dashboard
+                header('Location: adminDashboard.php'); 
             } else {
-                header('Location: userDashboard.php'); // Redirect to user dashboard
+                header('Location: userDashboard.php'); 
             }
             exit();
         } else {
-            // Invalid password
             $_SESSION['message'] = 'Invalid username/email or password';
         }
     } else {
-        // User does not exist
         $_SESSION['message'] = 'Invalid username/email or password';
     }
     
-    header('Location: loginRegister.php'); // Redirect back to login page if login fails
+    header('Location: loginRegister.php');
     exit();
 }
 ?>

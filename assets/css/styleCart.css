@@ -69,7 +69,6 @@ header{
     border-radius: 20px;
 }
 
-/* cart */
 .cartTab{
     width: 400px;
     background-color: #353432;
@@ -146,8 +145,6 @@ body.showCart .container{
     }
 }
 
-
-/* mobile */
 @media only screen and (max-width: 768px) {
     .listProduct{
         grid-template-columns: repeat(2, 1fr);

@@ -1,42 +1,36 @@
 <?php
 session_start();
 
-// Redirect to login page if not logged in or role is not 'user'
 if ($_SESSION['role'] !== 'user') {
-    header('Location: loginRegister.php'); // Redirect if not a user
+    header('Location: loginRegister.php'); 
     exit;
 }
 
-// Include database connection
-$host = 'localhost'; // or your database host
-$dbname = 'walkon'; // your database name
-$username = 'root'; // your database username
-$password = ''; // your database password (empty if no password)
+$host = 'localhost';
+$dbname = 'walkon'; 
+$username = 'root'; 
+$password = ''; 
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Set error mode to exception
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
 } catch (PDOException $e) {
-    // If connection fails, handle the error
     die("Database connection failed: " . $e->getMessage());
 }
 
-// Get user information from session
-$username = $_SESSION['username']; // Get the username from session
+$username = $_SESSION['username']; 
 
 $query = "SELECT username FROM users WHERE username = ?";
 $stmt = $pdo->prepare($query);
 $stmt->execute([$username]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Check if user exists
 if (!$user) {
-    // Handle the case where no user is found
     header('Location: loginRegister.php');
     exit;
 }
 
-$fullName = $user['username']; // Store username from the database
+$fullName = $user['username'];
 ?>
 
 <!DOCTYPE html>
@@ -45,24 +39,12 @@ $fullName = $user['username']; // Store username from the database
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!--=============== FAVICON ===============-->
-    <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
-
-    <!--=============== REMIXICONS ===============-->
+        <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" crossorigin="anonymous">
-
-    <!--=============== SWIPER CSS ===============-->
     <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
-
-    <!--=============== CSS ===============-->
     <link rel="stylesheet" href="assets/css/styles.css">
-
-    <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
     <title>Welcome - Walk On</title>
-    <!-- Header Section -->
     <header class="header" id="header">
         <nav class="nav container">
             <div class="navLOGO">
@@ -111,10 +93,7 @@ $fullName = $user['username']; // Store username from the database
 <body>
       
 
-      <!--==================== MAIN ====================-->
       <main>
-         <!--==================== HOME ====================-->
-
                   <section class="home" >
                      <div class="home__container container">
                          <div class="home__data">
@@ -164,7 +143,6 @@ $fullName = $user['username']; // Store username from the database
                  </section>
                
                  
-         <!-- BANNER SECTION -->
          <section id="banner" class="section-m1">
             <h1>Explore More</h1>
             <p>Winter Collection</p>
@@ -172,11 +150,9 @@ $fullName = $user['username']; // Store username from the database
 
 
          <section>
-            <!-- PRODUCT SECTION -->
          <section id="product1" class="section1">
 
             
-            <!-- PRODUCT SECTION JORDAN -->
             <div class="Converse">
                <h2>CONVERSE</h2>
                <img src="assets/img/LOGOS/converse.png" alt="Converse Logo" class="brand-logo"> 
@@ -268,7 +244,6 @@ $fullName = $user['username']; // Store username from the database
 
             
 
-            <!-- PRODUCT SECTION JORDAN -->
             <div class="jordan">
                <h2>JORDAN</h2>
                <img src="assets/img/LOGOS/jordan.png" alt="Jordan Logo" class="brand-logo">
@@ -358,7 +333,6 @@ $fullName = $user['username']; // Store username from the database
 
             <br><br> 
 
-            <!-- PRODUCT SECTION PUMA -->
             <div class="puma">
                <h2>PUMA</h2>
                <img src="assets/img/LOGOS/puma.png" alt="Puma Logo" class="brand-logo">
@@ -448,7 +422,6 @@ $fullName = $user['username']; // Store username from the database
 
             <br><br> 
 
-            <!-- PRODUCT SECTION ADIDAS -->
             <div class="adidas">
                <h2>ADIDAS</h2>
                <img src="assets/img/LOGOS/adidas.png" alt="Adidas Logo" class="brand-logo">
@@ -540,7 +513,6 @@ $fullName = $user['username']; // Store username from the database
       </main>
 
 
-      <!-- BANNER SECTION -->
       <section id="Contactbanner" class="section-01">
          <h1>BUY 1 GET 20% OFF</h1>
          <p>On Winter Collection</p>
@@ -550,7 +522,6 @@ $fullName = $user['username']; // Store username from the database
          
      </section>
 
-      <!-- FOOTER -->
       <section class="footer">
          <div class="footer-info">
 
@@ -606,15 +577,9 @@ $fullName = $user['username']; // Store username from the database
       
    </section>
    </main>
-
-      <!--=============== SWIPER JS ===============-->
       <script src="assets/js/swiper-bundle.min.js"></script>
-
-      <!--=============== MAIN JS ===============-->
       <script src="assets/js/main.js"></script>
       <script src="assets/js/cart.js"></script>
-
    </body>
-
 </body>
 </html>

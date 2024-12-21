@@ -1,6 +1,3 @@
-
-
-/*=============== Product ===============*/
 #product1 {
   text-align: center;
   font-family: var(--second-font);
@@ -36,8 +33,8 @@
 }
 
 .pro img {
-  width: 100%; /* Make image responsive */
-  height: auto; /* Maintain aspect ratio */
+  width: 100%; 
+  height: auto; 
   border-radius: 25px;
 }
 
@@ -49,7 +46,6 @@
   width: 100%;
 }
 
-/*=============== Product (ADD TO CART & Favorite) ===============*/
 .button-container {
   display: flex;
   flex-direction: column;
@@ -99,7 +95,6 @@
 }
 
 
-/*=============== FOOTER ===============*/
 .footer {
   background-color: rgb(37, 37, 37);
   color: #ddd;
@@ -136,7 +131,6 @@
   font-size: 12px;
 
 }
-/*=============== PRODUCT PAGE ===============*/
 
 #Contactbanner {
   font-size: 2rem;
@@ -220,18 +214,6 @@
       margin-bottom: 20px;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 .icon-cart {

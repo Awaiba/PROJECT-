@@ -3,26 +3,13 @@
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      
-      <!--=============== FAVICON ===============-->
-      <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
-
-      <!--=============== REMIXICONS ===============-->
+            <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" crossorigin="">
-
-      <!--=============== SWIPER CSS ===============-->
       <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
-
-      <!--=============== CSS ===============-->
       <link rel="stylesheet" href="assets/css/styles.css">
-
-      <!-- Font Awesome CDN -->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
       <title>Walk On</title>
-      <!--==================== HEADER ====================-->
       <header class="header" id="header">
-
          <nav class="nav container">
             <div class="navLOGO">
                <a href="index.php" class="nav__logo">
@@ -50,13 +37,10 @@
                      </li>
                   </ul>
 
-               <!-- Close Button -->
-
                <div class="nav__close" id="nav-close">
                   <i class="ri-close-line"></i>
                </div>
             </div>
-            <!-- Toggle Button -->
             <div class="nav__toggle" id="nav-toggle">
                <i class="ri-apps-2-fill"></i>
             </div>
@@ -65,12 +49,7 @@
       </header>
    </head>
    <body>
-      
-
-      <!--==================== MAIN ====================-->
-      <main>
-         <!--==================== HOME ====================-->
-
+                <main>
                   <section class="home" >
                      <div class="home__container container">
                          <div class="home__data">
@@ -118,21 +97,12 @@
                          </div>
                      </div>
                  </section>
-               
-                 
-         <!-- BANNER SECTION -->
          <section id="banner" class="section-m1">
             <h1>Explore More</h1>
             <p>Winter Collection</p>
          </section>
-
-
-         <section>
-            <!-- PRODUCT SECTION -->
+        <section>
          <section id="product1" class="section1">
-
-            
-            <!-- PRODUCT SECTION JORDAN -->
             <div class="Converse">
                <h2>CONVERSE</h2>
                <img src="assets/img/LOGOS/converse.png" alt="Converse Logo" class="brand-logo"> 
@@ -221,10 +191,6 @@
             </div>
 
             <br><br> 
-
-            
-
-            <!-- PRODUCT SECTION JORDAN -->
             <div class="jordan">
                <h2>JORDAN</h2>
                <img src="assets/img/LOGOS/jordan.png" alt="Jordan Logo" class="brand-logo">
@@ -311,10 +277,7 @@
                   </div>
                </div>
             </div>
-
             <br><br> 
-
-            <!-- PRODUCT SECTION PUMA -->
             <div class="puma">
                <h2>PUMA</h2>
                <img src="assets/img/LOGOS/puma.png" alt="Puma Logo" class="brand-logo">
@@ -401,10 +364,7 @@
                   </div>
                </div>
             </div>
-
             <br><br> 
-
-            <!-- PRODUCT SECTION ADIDAS -->
             <div class="adidas">
                <h2>ADIDAS</h2>
                <img src="assets/img/LOGOS/adidas.png" alt="Adidas Logo" class="brand-logo">
@@ -494,19 +454,13 @@
             <br><br> 
          </section>
       </main>
-
-
-      <!-- BANNER SECTION -->
       <section id="Contactbanner" class="section-01">
          <h1>BUY 1 GET 20% OFF</h1>
          <p>On Winter Collection</p>
          <button class="contactbannerbutton">
              <a href="product.html" >BUY NOW</a>
          </button>
-         
      </section>
-
-      <!-- FOOTER -->
       <section class="footer">
          <div class="footer-info">
 
@@ -562,13 +516,8 @@
       
    </section>
    </main>
-
-      <!--=============== SWIPER JS ===============-->
       <script src="assets/js/swiper-bundle.min.js"></script>
-
-      <!--=============== MAIN JS ===============-->
       <script src="assets/js/main.js"></script>
       <script src="assets/js/cart.js"></script>
-
    </body>
 </html>
