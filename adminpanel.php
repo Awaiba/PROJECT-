@@ -48,7 +48,13 @@ $userResult = fetchData($pdo, $userQuery);
 
 $orderQuery = "SELECT * FROM user_orders";
 $orderResult = fetchData($pdo, $orderQuery);
+
+$orderQuery = "SELECT * FROM user_orders";
+$orderResult = $pdo->query($orderQuery)->fetchAll(PDO::FETCH_ASSOC);
 ?>
+?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -115,6 +121,49 @@ $orderResult = fetchData($pdo, $orderQuery);
         .btn-delete:hover {
             background-color: #c82333;
         }
+        .search-bar {
+        width: 50%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        }
+        .add-btn {
+        margin: 10px 0;
+        padding: 10px 15px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        }
+
+        .add-btn:hover {
+        background-color: #45a049;
+    }
+        .btn {
+        padding: 5px 10px;
+        text-decoration: none;
+        color: white;
+        border-radius: 3px;
+        margin: 2px;
+    }
+
+    .btn-edit {
+        background-color: #2196F3;
+    }
+
+    .btn-edit:hover {
+        background-color: #1976D2;
+    }
+
+    .btn-delete {
+        background-color: #f44336;
+    }
+
+    .btn-delete:hover {
+        background-color: #d32f2f;
+    }
     </style>
 </head>
 <body>
@@ -150,112 +199,167 @@ $orderResult = fetchData($pdo, $orderQuery);
     </header>
 
     <main class="admin-panel container">
-        <h1>Product Details</h1>
-        <table class="admin-table">
-            <thead>
+    <h1>Product Details</h1>
+    <input type="text" id="productSearch" placeholder="Search Products..." class="search-bar">
+    <button class="add-btn" onclick="openAddProductModal()">Add Product</button>
+    <table class="admin-table" id="productTable">
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Name</th>
+                <th>Brand</th>
+                <th>Price</th>
+                <th>Material</th>
+                <th>Color</th>
+                <th>Size</th>
+                <th>Stock</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($productResult as $productRow) : ?>
                 <tr>
-                    <th>Product ID</th>
-                    <th>Name</th>
-                    <th>Brand</th>
-                    <th>Price</th>
-                    <th>Material</th>
-                    <th>Color</th>
-                    <th>Size</th>
-                    <th>Stock</th>
+                    <td><?php echo htmlspecialchars($productRow['product_id']); ?></td>
+                    <td><?php echo htmlspecialchars($productRow['name']); ?></td>
+                    <td><?php echo htmlspecialchars($productRow['brand']); ?></td>
+                    <td><?php echo htmlspecialchars($productRow['price']); ?></td>
+                    <td><?php echo htmlspecialchars($productRow['material']); ?></td>
+                    <td><?php echo htmlspecialchars($productRow['color']); ?></td>
+                    <td><?php echo htmlspecialchars($productRow['size']); ?></td>
+                    <td><?php echo htmlspecialchars($productRow['stock']); ?></td>
+                    <td>
+                        <a href="editProduct.php?id=<?php echo $productRow['product_id']; ?>" class="btn btn-edit">Edit</a>
+                        <a href="deleteProduct.php?id=<?php echo $productRow['product_id']; ?>" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($productResult as $productRow) : ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($productRow['product_id']); ?></td>
-                        <td><?php echo htmlspecialchars($productRow['name']); ?></td>
-                        <td><?php echo htmlspecialchars($productRow['brand']); ?></td>
-                        <td><?php echo htmlspecialchars($productRow['price']); ?></td>
-                        <td><?php echo htmlspecialchars($productRow['material']); ?></td>
-                        <td><?php echo htmlspecialchars($productRow['color']); ?></td>
-                        <td><?php echo htmlspecialchars($productRow['size']); ?></td>
-                        <td><?php echo htmlspecialchars($productRow['stock']); ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
 
-        <h1>User Details</h1>
-        <table class="admin-table">
-            <thead>
+    <h1>User Details</h1>
+    <input type="text" id="userSearch" placeholder="Search Users..." class="search-bar">
+    <button class="add-btn" onclick="openAddUserModal()">Add User</button>
+    <table class="admin-table" id="userTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($userResult as $userRow) : ?>
                 <tr>
-                    <th>ID</th>
-                    <th>Username</th>
-                    <th>Phone Number</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Actions</th>
+                    <td><?php echo htmlspecialchars($userRow['id']); ?></td>
+                    <td><?php echo htmlspecialchars($userRow['username']); ?></td>
+                    <td><?php echo htmlspecialchars($userRow['phone_no']); ?></td>
+                    <td><?php echo htmlspecialchars($userRow['email']); ?></td>
+                    <td><?php echo htmlspecialchars($userRow['role']); ?></td>
+                    <td>
+                        <a href="assets/inventoryMGMT/editUser.php?id=<?php echo $userRow['id']; ?>" class="btn btn-edit">Edit</a>
+                        <a href="assets/inventoryMGMT/deleteUser.php?id=<?php echo $userRow['id']; ?>" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-    <?php if (isset($_SESSION['message'])): ?>
-        <div class="alert alert-success" role="alert">
-            <?php echo $_SESSION['message']; ?>
-        </div>
-    <?php unset($_SESSION['message']); endif; ?>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
 
-    <?php foreach ($userResult as $userRow) : ?>
-        <tr>
-            <td><?php echo htmlspecialchars($userRow['id']); ?></td>
-            <td><?php echo htmlspecialchars($userRow['username']); ?></td>
-            <td><?php echo htmlspecialchars($userRow['phone_no']); ?></td>
-            <td><?php echo htmlspecialchars($userRow['email']); ?></td>
-            <td><?php echo htmlspecialchars($userRow['role']); ?></td>
-            <td>
-                <a href="assets/inventoryMGMT/editUser.php?id=<?php echo $userRow['id']; ?>" class="btn btn-edit">Edit</a>
-                <a href="assets/inventoryMGMT/deleteUser.php?id=<?php echo $userRow['id']; ?>" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
-            </td>
-        </tr>
-    <?php endforeach; ?>
-</tbody>
-
-        </table>
-
-        <h1>User Orders</h1>
-        <table class="admin-table">
-            <thead>
+    <h1>User Orders</h1>
+    <input type="text" id="orderSearch" placeholder="Search Orders..." class="search-bar">
+    <table class="admin-table" id="orderTable">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>User ID</th>
+                <th>Product ID</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>District</th>
+                <th>Street</th>
+                <th>Payment Method</th>
+                <th>Created At</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($orderResult as $orderRow) : ?>
                 <tr>
-                    <th>Order ID</th>
-                    <th>User ID</th>
-                    <th>Product ID</th>
-                    <th>Quantity</th>
-                    <th>Total Price</th>
-                    <th>Name</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                    <th>Address</th>
-                    <th>District</th>
-                    <th>Street</th>
-                    <th>Payment Method</th>
-                    <th>Created At</th>
+                    <td><?php echo htmlspecialchars($orderRow['order_id']); ?></td>
+                    <td><?php echo htmlspecialchars($orderRow['user_id']); ?></td>
+                    <td><?php echo htmlspecialchars($orderRow['product_id']); ?></td>
+                    <td><?php echo htmlspecialchars($orderRow['quantity']); ?></td>
+                    <td><?php echo htmlspecialchars($orderRow['total_price']); ?></td>
+                    <td><?php echo htmlspecialchars($orderRow['name']); ?></td>
+                    <td><?php echo htmlspecialchars($orderRow['phone']); ?></td>
+                    <td><?php echo htmlspecialchars($orderRow['email']); ?></td>
+                    <td><?php echo htmlspecialchars($orderRow['address']); ?></td>
+                    <td><?php echo htmlspecialchars($orderRow['district']); ?></td>
+                    <td><?php echo htmlspecialchars($orderRow['street']); ?></td>
+                    <td><?php echo htmlspecialchars($orderRow['payment_method']); ?></td>
+                    <td><?php echo htmlspecialchars($orderRow['created_at']); ?></td>
+                    <td>
+                        <form action="updateOrderStatus.php" method="POST">
+                            <input type="hidden" name="order_id" value="<?php echo $orderRow['order_id']; ?>">
+                            <select name="order_status">
+                                <option value="Pending" <?php echo ($orderRow['order_status'] === 'Pending') ? 'selected' : ''; ?>>Pending</option>
+                                <option value="Completed" <?php echo ($orderRow['order_status'] === 'Completed') ? 'selected' : ''; ?>>Completed</option>
+                                <!-- Add other statuses if needed -->
+                            </select>
+                            <button type="submit" class="btn btn-update">Update Status</button>
+                        </form>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($orderResult as $orderRow) : ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($orderRow['order_id']); ?></td>
-                        <td><?php echo htmlspecialchars($orderRow['user_id']); ?></td>
-                        <td><?php echo htmlspecialchars($orderRow['product_id']); ?></td>
-                        <td><?php echo htmlspecialchars($orderRow['quantity']); ?></td>
-                        <td><?php echo htmlspecialchars($orderRow['total_price']); ?></td>
-                        <td><?php echo htmlspecialchars($orderRow['name']); ?></td>
-                        <td><?php echo htmlspecialchars($orderRow['phone']); ?></td>
-                        <td><?php echo htmlspecialchars($orderRow['email']); ?></td>
-                        <td><?php echo htmlspecialchars($orderRow['address']); ?></td>
-                        <td><?php echo htmlspecialchars($orderRow['district']); ?></td>
-                        <td><?php echo htmlspecialchars($orderRow['street']); ?></td>
-                        <td><?php echo htmlspecialchars($orderRow['payment_method']); ?></td>
-                        <td><?php echo htmlspecialchars($orderRow['created_at']); ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </main>
-
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</main>
 </body>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    function filterTable(inputId, tableId) {
+        const input = document.getElementById(inputId);
+        const table = document.getElementById(tableId);
+        const rows = table.getElementsByTagName("tr");
+
+        input.addEventListener("input", function () {
+            const filter = input.value.toLowerCase();
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName("td");
+                let match = false;
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j] && cells[j].innerText.toLowerCase().includes(filter)) {
+                        match = true;
+                        break;
+                    }
+                }
+                rows[i].style.display = match ? "" : "none";
+            }
+        });
+    }
+
+    filterTable("productSearch", "productTable");
+    filterTable("userSearch", "userTable");
+    filterTable("orderSearch", "orderTable");
+    });
+    function openAddProductModal() {
+        alert("Open Add Product Modal or Redirect to Add Product Page");
+    }
+
+    function openAddUserModal() {
+        alert("Open Add User Modal or Redirect to Add User Page");
+    }
+
+    function openAddOrderModal() {
+        alert("Open Add Order Modal or Redirect to Add Order Page");
+    }
+</script>
+
 </html>

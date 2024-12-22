@@ -73,22 +73,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </nav>
     </header>
+    <style>
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .input-group input:invalid {
+            border: 1px solid red;
+        }
+        .input-group input:valid {
+            border: 1px solid green;
+        }
+    </style>
 </head>
 <body>
-
     <div class="login-container">
         <div class="login-form">
             <h2>Login</h2>
-            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+            <form id="loginForm" method="POST">
 
                 <div class="input-group">
                     <label for="username">Email or Username</label>
-                    <input type="text" id="username" name="username" placeholder="Enter your email or Username" required>
+                    <input type="text" id="username" name="username" placeholder="Enter your email or username" required>
+                    <div id="usernameError" class="error-message"></div>
                 </div>
 
                 <div class="input-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <div id="passwordError" class="error-message"></div>
                 </div>
 
                 <button type="submit" class="login-btn">Login</button>
@@ -98,5 +112,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const usernameInput = document.getElementById("username");
+            const passwordInput = document.getElementById("password");
+            const usernameError = document.getElementById("usernameError");
+            const passwordError = document.getElementById("passwordError");
+            const form = document.getElementById("loginForm");
+
+            function validateUsername() {
+                const value = usernameInput.value.trim();
+                if (value === "") {
+                    usernameError.textContent = "Email or Username is required.";
+                    usernameInput.setCustomValidity("Invalid");
+                } else {
+                    usernameError.textContent = "";
+                    usernameInput.setCustomValidity("");
+                }
+            }
+
+            function validatePassword() {
+                const value = passwordInput.value.trim();
+                if (value === "") {
+                    passwordError.textContent = "Password is required.";
+                    passwordInput.setCustomValidity("Invalid");
+                } else {
+                    passwordError.textContent = "";
+                    passwordInput.setCustomValidity("");
+                }
+            }
+
+            usernameInput.addEventListener("input", validateUsername);
+            passwordInput.addEventListener("input", validatePassword);
+
+            form.addEventListener("submit", function (e) {
+                validateUsername();
+                validatePassword();
+
+                if (!form.checkValidity()) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
 </body>
 </html>

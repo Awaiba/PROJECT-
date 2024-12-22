@@ -180,4 +180,109 @@ if (isset($_SESSION['message'])) {
     </form>
 
 </body>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const username = document.getElementById("username");
+    const phoneNo = document.getElementById("phone-no");
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirm-password");
+    const role = document.getElementById("role");
+
+    // Helper function to show error messages
+    const showError = (element, message) => {
+        let error = element.parentElement.querySelector(".error-message");
+        if (!error) {
+            error = document.createElement("span");
+            error.className = "error-message";
+            error.style.color = "red";
+            error.style.fontSize = "0.9em";
+            element.parentElement.appendChild(error);
+        }
+        error.innerText = message;
+    };
+
+    // Helper function to remove error messages
+    const clearError = (element) => {
+        const error = element.parentElement.querySelector(".error-message");
+        if (error) {
+            error.remove();
+        }
+    };
+
+    // Validation functions
+    const validateUsername = () => {
+        const value = username.value.trim();
+        if (value.length < 3) {
+            showError(username, "Username must be at least 3 characters long.");
+        } else {
+            clearError(username);
+        }
+    };
+
+    const validatePhoneNo = () => {
+        const value = phoneNo.value.trim();
+        const phonePattern = /^[0-9]{10}$/;
+        if (!phonePattern.test(value)) {
+            showError(phoneNo, "Phone number must be 10 digits.");
+        } else {
+            clearError(phoneNo);
+        }
+    };
+
+    const validateEmail = () => {
+        const value = email.value.trim();
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(value)) {
+            showError(email, "Please enter a valid email address.");
+        } else {
+            clearError(email);
+        }
+    };
+
+    const validatePassword = () => {
+        const value = password.value;
+        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        if (!passwordPattern.test(value)) {
+            showError(password, "Password must include uppercase, lowercase, number, and special character.");
+        } else {
+            clearError(password);
+        }
+    };
+
+    const validateConfirmPassword = () => {
+        const value = confirmPassword.value;
+        if (value !== password.value) {
+            showError(confirmPassword, "Passwords do not match.");
+        } else {
+            clearError(confirmPassword);
+        }
+    };
+
+    const validateRole = () => {
+        if (!role.value) {
+            showError(role, "Please select a role.");
+        } else {
+            clearError(role);
+        }
+    };
+
+    // Attach event listeners for real-time validation
+    username.addEventListener("input", validateUsername);
+    phoneNo.addEventListener("input", validatePhoneNo);
+    email.addEventListener("input", validateEmail);
+    password.addEventListener("input", validatePassword);
+    confirmPassword.addEventListener("input", validateConfirmPassword);
+    role.addEventListener("blur", validateRole);
+
+    // Optional: Validate on blur for more comprehensive checking
+    username.addEventListener("blur", validateUsername);
+    phoneNo.addEventListener("blur", validatePhoneNo);
+    email.addEventListener("blur", validateEmail);
+    password.addEventListener("blur", validatePassword);
+    confirmPassword.addEventListener("blur", validateConfirmPassword);
+});
+</script>
+
+
 </html>
