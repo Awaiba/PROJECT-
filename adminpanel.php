@@ -164,6 +164,61 @@ $orderResult = $pdo->query($orderQuery)->fetchAll(PDO::FETCH_ASSOC);
     .btn-delete:hover {
         background-color: #d32f2f;
     }
+.btn-update-status {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #007bff; 
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-update-status:hover {
+    background-color: #0056b3;
+}
+
+.btn-complete {
+    background-color: #28a745;
+}
+
+.btn-complete:hover {
+    background-color: #218838; 
+}
+
+.btn-pending {
+    background-color: #ffc107; 
+}
+
+.btn-pending:hover {
+    background-color: #e0a800;
+}
+
+
+/* CSS for updating order status button */
+.btn-update {
+    background-color: #007bff; /* Blue background */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    padding: 10px 20px; /* Padding */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Font size */
+    transition: background-color 0.3s ease-in-out; /* Smooth background color transition */
+}
+
+.btn-update:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    color: white; /* Keep text color */
+}
+
+.btn-update:disabled {
+    background-color: #c0c0c0; /* Greyed out color when disabled */
+    cursor: not-allowed; /* Pointer cursor */
+}
     </style>
 </head>
 <body>
@@ -238,7 +293,6 @@ $orderResult = $pdo->query($orderQuery)->fetchAll(PDO::FETCH_ASSOC);
 
     <h1>User Details</h1>
     <input type="text" id="userSearch" placeholder="Search Users..." class="search-bar">
-    <button class="add-btn" onclick="openAddUserModal()">Add User</button>
     <table class="admin-table" id="userTable">
         <thead>
             <tr>
