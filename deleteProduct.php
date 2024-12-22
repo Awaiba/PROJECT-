@@ -1,16 +1,23 @@
 <?php
-require 'db_connection.php';
+session_start();
+include 'dbConnection.php'; // Ensure correct path to dbConnection.php
 
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-    $sql = "DELETE FROM product WHERE product_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $id);
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
+    $product_id = $_GET['id'];
 
-    if ($stmt->execute()) {
-        header("Location: adminPanel.php");
+    // Delete the product from the database
+    $deleteQuery = "DELETE FROM product WHERE product_id = :product_id";
+    $stmt = $pdo->prepare($deleteQuery);
+    $result = $stmt->execute(['product_id' => $product_id]);
+
+    if ($result) {
+        $_SESSION['message'] = 'Product deleted successfully!';
+        header('Location: adminPanel.php'); // Redirect back to the product listing
+        exit;
     } else {
-        echo "Error: " . $stmt->error;
+        $_SESSION['message'] = 'Failed to delete product!';
+        header('Location: adminPanel.php'); // Redirect back to the product listing
+        exit;
     }
 }
 ?>

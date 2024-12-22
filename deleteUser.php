@@ -12,8 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (!isset($_POST['csrf_token']) || $_
     die('Invalid CSRF token.');
 }
 
-// Database connection
-include '../../dbConnection.php'; // Ensure the correct path to dbConnection.php
+// Include database connection
+require_once 'dbConnection.php';
 
 // Get user ID from URL
 $id = $_GET['id'];
@@ -25,9 +25,10 @@ $result = $stmt->execute(['id' => $id]);
 
 if ($result) {
     $_SESSION['message'] = 'User deleted successfully!';
+    header('Location: adminPanel.php'); // Redirect back to adminPanel
 } else {
     $_SESSION['message'] = 'Failed to delete user!';
+    header('Location: adminPanel.php'); // Redirect back to adminPanel
 }
-header('Location: adminPanel.php'); // Redirect back to adminPanel
 exit;
 ?>

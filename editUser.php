@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (!isset($_POST['csrf_token']) || $_
 }
 
 // Database connection
-include '../../dbConnection.php'; // Ensure the correct path to dbConnection.php
+include 'dbConnection.php'; // Ensure the correct path to dbConnection.php
 
 // Get user ID from URL
 $id = $_GET['id'];
@@ -45,6 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     } else {
         $_SESSION['message'] = 'Failed to update user!';
+        header('Location: editUser.php'); // Redirect back to adminPanel
+
     }
 }
 ?>
@@ -91,6 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </select>
             
             <button type="submit">Update User</button>
+            
         </form>
     </main>
 

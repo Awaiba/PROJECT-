@@ -313,8 +313,8 @@ $orderResult = $pdo->query($orderQuery)->fetchAll(PDO::FETCH_ASSOC);
                     <td><?php echo htmlspecialchars($userRow['email']); ?></td>
                     <td><?php echo htmlspecialchars($userRow['role']); ?></td>
                     <td>
-                        <a href="assets/inventoryMGMT/editUser.php?id=<?php echo $userRow['id']; ?>" class="btn btn-edit">Edit</a>
-                        <a href="assets/inventoryMGMT/deleteUser.php?id=<?php echo $userRow['id']; ?>" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                        <a href="editUser.php?id=<?php echo $userRow['id']; ?>" class="btn btn-edit">Edit</a>
+                        <a href="deleteUser.php?id=<?php echo $userRow['id']; ?>" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -322,59 +322,63 @@ $orderResult = $pdo->query($orderQuery)->fetchAll(PDO::FETCH_ASSOC);
     </table>
 
     <h1>User Orders</h1>
-    <input type="text" id="orderSearch" placeholder="Search Orders..." class="search-bar">
-    <table class="admin-table" id="orderTable">
-        <thead>
+<input type="text" id="orderSearch" placeholder="Search Orders..." class="search-bar">
+<table class="admin-table" id="orderTable">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>User ID</th>
+            <th>Product ID</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>District</th>
+            <th>Street</th>
+            <th>Payment Method</th>
+            <th>Created At</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($orderResult as $orderRow) : ?>
             <tr>
-                <th>Order ID</th>
-                <th>User ID</th>
-                <th>Product ID</th>
-                <th>Quantity</th>
-                <th>Total Price</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Address</th>
-                <th>District</th>
-                <th>Street</th>
-                <th>Payment Method</th>
-                <th>Created At</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <td><?php echo htmlspecialchars($orderRow['order_id']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['user_id']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['product_id']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['quantity']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['total_price']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['name']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['phone']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['email']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['address']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['district']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['street']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['payment_method']); ?></td>
+                <td><?php echo htmlspecialchars($orderRow['created_at']); ?></td>
+                <td>
+                    <form action="updateOrderStatus.php" method="POST">
+                        <input type="hidden" name="order_id" value="<?php echo $orderRow['order_id']; ?>">
+                        <select name="order_status">
+                            <option value="Pending" <?php echo ($orderRow['order_status'] === 'Pending') ? 'selected' : ''; ?>>Pending</option>
+                            <option value="Completed" <?php echo ($orderRow['order_status'] === 'Completed') ? 'selected' : ''; ?>>Completed</option>
+                            <!-- Add other statuses if needed -->
+                        </select>
+                        <button type="submit" class="btn btn-update">Update Status</button>
+                    </form>
+                </td>
+                <td>
+                    <a href="deleteOrder.php?id=<?php echo $orderRow['order_id']; ?>" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this order?');">Delete</a>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($orderResult as $orderRow) : ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($orderRow['order_id']); ?></td>
-                    <td><?php echo htmlspecialchars($orderRow['user_id']); ?></td>
-                    <td><?php echo htmlspecialchars($orderRow['product_id']); ?></td>
-                    <td><?php echo htmlspecialchars($orderRow['quantity']); ?></td>
-                    <td><?php echo htmlspecialchars($orderRow['total_price']); ?></td>
-                    <td><?php echo htmlspecialchars($orderRow['name']); ?></td>
-                    <td><?php echo htmlspecialchars($orderRow['phone']); ?></td>
-                    <td><?php echo htmlspecialchars($orderRow['email']); ?></td>
-                    <td><?php echo htmlspecialchars($orderRow['address']); ?></td>
-                    <td><?php echo htmlspecialchars($orderRow['district']); ?></td>
-                    <td><?php echo htmlspecialchars($orderRow['street']); ?></td>
-                    <td><?php echo htmlspecialchars($orderRow['payment_method']); ?></td>
-                    <td><?php echo htmlspecialchars($orderRow['created_at']); ?></td>
-                    <td>
-                        <form action="updateOrderStatus.php" method="POST">
-                            <input type="hidden" name="order_id" value="<?php echo $orderRow['order_id']; ?>">
-                            <select name="order_status">
-                                <option value="Pending" <?php echo ($orderRow['order_status'] === 'Pending') ? 'selected' : ''; ?>>Pending</option>
-                                <option value="Completed" <?php echo ($orderRow['order_status'] === 'Completed') ? 'selected' : ''; ?>>Completed</option>
-                                <!-- Add other statuses if needed -->
-                            </select>
-                            <button type="submit" class="btn btn-update">Update Status</button>
-                        </form>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+        <?php endforeach; ?>
+    </tbody>
+</table>
 </main>
+
 </body>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -404,8 +408,8 @@ document.addEventListener("DOMContentLoaded", function () {
     filterTable("orderSearch", "orderTable");
     });
     function openAddProductModal() {
-        alert("Open Add Product Modal or Redirect to Add Product Page");
-    }
+    window.location.href = 'addProduct.php';  
+}
 
     function openAddUserModal() {
         alert("Open Add User Modal or Redirect to Add User Page");

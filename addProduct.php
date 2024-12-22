@@ -1,7 +1,9 @@
 <?php
-require 'db_connection.php';
+// Include your database connection
+include 'dbConnection.php';
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
     $brand = $_POST['brand'];
     $price = $_POST['price'];
@@ -10,54 +12,65 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $size = $_POST['size'];
     $stock = $_POST['stock'];
 
-    $sql = "INSERT INTO product (name, brand, price, material, color, size, stock) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssdsssi", $name, $brand, $price, $material, $color, $size, $stock);
+    // Insert the new product into the database
+    $insertQuery = "INSERT INTO product (name, brand, price, material, color, size, stock) 
+                    VALUES (:name, :brand, :price, :material, :color, :size, :stock)";
+    $stmt = $pdo->prepare($insertQuery);
+    $result = $stmt->execute([
+        'name' => $name, 
+        'brand' => $brand, 
+        'price' => $price, 
+        'material' => $material, 
+        'color' => $color, 
+        'size' => $size, 
+        'stock' => $stock
+    ]);
 
-    if ($stmt->execute()) {
-        header("Location: adminPanel.php");
+    if ($result) {
+        $_SESSION['message'] = 'Product added successfully!';
+        header('Location: adminPanel.php'); // Redirect to the product listing page
     } else {
-        echo "Error: " . $stmt->error;
+        $_SESSION['message'] = 'Failed to add product!';
     }
+    exit;
 }
 ?>
-<html>
-    <head>
-    </head>
-    <body>
-    <div id="addProductModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeAddProductModal()">&times;</span>
-        <h2>Add Product</h2>
-        <form action="addProduct.php" method="POST">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="brand">Brand:</label>
-            <input type="text" id="brand" name="brand" required>
-            <label for="price">Price:</label>
-            <input type="number" id="price" name="price" required>
-            <label for="material">Material:</label>
-            <input type="text" id="material" name="material" required>
-            <label for="color">Color:</label>
-            <input type="text" id="color" name="color" required>
-            <label for="size">Size:</label>
-            <input type="text" id="size" name="size" required>
-            <label for="stock">Stock:</label>
-            <input type="number" id="stock" name="stock" required>
-            <button type="submit">Add Product</button>
-        </form>
-    </div>
-</div>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <link rel="stylesheet" href="path/to/your/css/style.css">
+    <script src="path/to/your/js/script.js">
+    </script>
+</head>
+<body>
+    <h1>Add Product</h1>
+    <form action="addProduct.php" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" required><br>
+        
+        <label for="brand">Brand:</label>
+        <input type="text" name="brand" id="brand" required><br>
+
+        <label for="price">Price:</label>
+        <input type="number" name="price" id="price" required><br>
+
+        <label for="material">Material:</label>
+        <input type="text" name="material" id="material" required><br>
+
+        <label for="color">Color:</label>
+        <input type="text" name="color" id="color" required><br>
+
+        <label for="size">Size:</label>
+        <input type="text" name="size" id="size" required><br>
+
+        <label for="stock">Stock:</label>
+        <input type="number" name="stock" id="stock" required><br>
+
+        <button type="submit">Add Product</button>
+    </form>
 </body>
-<script>
-function openAddProductModal() {
-    document.getElementById('addProductModal').style.display = 'block';
-}
-
-function closeAddProductModal() {
-    document.getElementById('addProductModal').style.display = 'none';
-}
-</script>
 </html>

@@ -20,8 +20,6 @@ try {
     die("Connection failed: " . $e->getMessage());
 }
 ?>
-Here’s a complete and structured code snippet for editing product details, including necessary database connection and form handling for product updates.
-dbConnection.php (Make sure this file exists and has proper configurations):
 
 <?php
 $host = 'localhost';  // Your database host
@@ -57,4 +55,6 @@ try {
 } catch (PDOException $e) {
     die("Database connection failed: " . $e->getMessage());
 }
+
+
 ?>
