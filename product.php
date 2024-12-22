@@ -46,7 +46,7 @@ $username = $_SESSION['username'];
                     </li>
 
                     <li class="nav__item">
-                        <a href="trackingorder.php" class="nav__link"><?php echo htmlspecialchars($username); ?></a>
+                        <a href="processLogin.php" class="nav__link"><?php echo htmlspecialchars($username); ?></a>
                     </li>
 
                     <li class="nav__item">
