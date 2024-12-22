@@ -1,54 +1,32 @@
 <?php
-session_start(); 
+session_start();
 
-$servername = "localhost"; 
-$username = "root"; 
-$password = ""; 
-$dbname = "walkon"; 
+// Generate a CSRF token if not already set
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 
-try {
-    $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+// Get the logged-in username
+$username = $_SESSION['username'];
+
+// Prepare a statement to fetch user data based on the session username
+$servername = "localhost";
+$dbusername = "root";
+$dbpassword = "";
+$dbname = "walkon";
+
+try {   
+    $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $thank_you_message = ''; 
+    $query = "SELECT username FROM users WHERE username = ?";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute([$username]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $name = $_POST['name'];
-        $phone = $_POST['phone'];
-        $email = $_POST['email'];
-        $address = $_POST['address'];
-        $district = $_POST['district'];
-        $street = $_POST['street'];
-        $cod = isset($_POST['cod']) ? 'COD' : 'Online Payment'; 
-
-        $product_id = 1; 
-        $quantity = 1; 
-        $username = $_SESSION['username']; 
-
-        $query = "SELECT username FROM users WHERE username = ?";
-        $stmt = $pdo->prepare($query);
-        $stmt->execute([$username]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        $productStmt = $pdo->prepare("SELECT price FROM product WHERE product_id = ?");
-        $productStmt->execute([$product_id]);
-        $product = $productStmt->fetch();
-        $product_price = $product['price'];
-
-        $total_price = $product_price * $quantity;
-
-        $stmt = $pdo->prepare("INSERT INTO user_orders (user_id, product_id, quantity, total_price, name, phone, email, address, district, street, payment_method) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([null, $product_id, $quantity, $total_price, $name, $phone, $email, $address, $district, $street, $cod]);
-        $thank_you_message = '<div class="thank-you-message">
-                                <h2>Thank You for Your Purchase!</h2>
-                                <p>We appreciate your order. Our team will contact you soon.</p>
-                                <a href="userDashboard.php" class="btn">Back to Home</a>
-                              </div>';
-    }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,9 +34,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Walk On - Checkout</title>
-
     <link rel="stylesheet" href="assets/css/styles.css">
-    
     <header class="header" id="header">
         <nav class="nav container">
             <div class="navLOGO">
@@ -68,28 +44,23 @@ try {
                 <h1 class="nav__logo-title">Walk On</h1>
             </div>
             <div class="nav__menu" id="nav-menu">
-            <ul class="nav__list">
+                <ul class="nav__list">
                     <li class="nav__item">
                         <a href="userDatabase.php" class="nav__link"><b>HOME</b></a>
                     </li>
-
                     <li class="nav__item">
                         <a href="product.php" class="nav__link">PRODUCTS</a>
                     </li>
-
                     <li class="nav__item">
                         <a href="contact.php" class="nav__link">CONTACT</a>
                     </li>
-
                     <li class="nav__item">
                         <a href="trackingorder.php" class="nav__link"><?php echo htmlspecialchars($username); ?></a>
                     </li>
-
                     <li class="nav__item">
                         <a href="logout.php" class="nav__link">LOG OUT</a>
                     </li>
                 </ul>
-
                 <div class="nav__close" id="nav-close">
                     <i class="ri-close-line"></i>
                 </div>
@@ -162,7 +133,7 @@ try {
         }
 
         .input-group textarea {
-            height: 100px; 
+            height: 100px;
             resize: none; 
         }
 
@@ -221,56 +192,172 @@ try {
         .thank-you-message a:hover {
             background-color: #505050;
         }
+
+        .error {
+        color: red;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        display: block;
+    }
+
     </style>
 </head>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('orderForm');
+
+        // Function to show or hide error messages
+        function showError(input, message) {
+            const errorElement = document.getElementById(`${input.id}Error`);
+            if (message) {
+                errorElement.textContent = message;
+            } else {
+                errorElement.textContent = '';
+            }
+        }
+
+        // Validate Name (only alphabetic characters allowed)
+        document.getElementById('name').addEventListener('input', function() {
+            const namePattern = /^[A-Za-z\s]+$/;
+            if (!this.value.trim() || !namePattern.test(this.value.trim())) {
+                showError(this, 'Full Name should contain only alphabetic characters.');
+            } else {
+                showError(this, '');
+            }
+        });
+
+        // Validate Phone
+        document.getElementById('phone').addEventListener('input', function() {
+            const phonePattern = /^\d{10}$/;
+            if (!this.value.trim() || !phonePattern.test(this.value.trim())) {
+                showError(this, 'Valid phone number is required.');
+            } else {
+                showError(this, '');
+            }
+        });
+
+        // Validate Email
+        document.getElementById('email').addEventListener('input', function() {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!this.value.trim() || !emailPattern.test(this.value.trim())) {
+                showError(this, 'Valid email is required.');
+            } else {
+                showError(this, '');
+            }
+        });
+
+        // Validate Address
+        document.getElementById('address').addEventListener('input', function() {
+            if (!this.value.trim()) {
+                showError(this, 'Address is required.');
+            } else {
+                showError(this, '');
+            }
+        });
+
+        // Validate District
+        document.getElementById('district').addEventListener('input', function() {
+            if (!this.value.trim()) {
+                showError(this, 'District is required.');
+            } else {
+                showError(this, '');
+            }
+        });
+
+        // Validate Street
+        document.getElementById('street').addEventListener('input', function() {
+            if (!this.value.trim()) {
+                showError(this, 'Street is required.');
+            } else {
+                showError(this, '');
+            }
+        });
+
+        // Form submission with real-time validation
+        form.addEventListener('submit', function(event) {
+            let isValid = true;
+
+            // Check each field again for validation
+            ['name', 'phone', 'email', 'address', 'district', 'street'].forEach(function(fieldId) {
+                const field = document.getElementById(fieldId);
+                if (!field.value.trim()) {
+                    showError(field, `${fieldId.charAt(0).toUpperCase() + fieldId.slice(1)} is required.`);
+                    isValid = false;
+                }
+            });
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+
+</head>
 <body>
-<div class="checkout-container">
-<div class="checkout-form">
-    <h2>Checkout</h2>
-
-    <?php if ($thank_you_message == ''): ?>
-        <form action="" method="post">
-            <div class="input-group">
-                <label for="name">Full Name</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-
-            <div class="input-group">
-                <label for="phone">Phone Number</label>
-                <input type="text" id="phone" name="phone" required>
-            </div>
-
-            <div class="input-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-
-            <div class="input-group">
-                <label for="address">Address</label>
-                <input type="text" id="address" name="address" required>
-            </div>
-
-            <div class="input-group">
-                <label for="district">District</label>
-                <input type="text" id="district" name="district" required>
-            </div>
-
-            <div class="input-group">
-                <label for="street">Street</label>
-                <input type="text" id="street" name="street" required>
-            </div>
-
-            <div class="input-group">
-                <input type="checkbox" id="cod" name="cod">
-                <label for="cod">Cash on Delivery</label>
-            </div>
-
-            <button type="submit" class="checkout-btn">Place Order</button>
-        </form>
+    <!-- Display Thank You Message if session is set -->
+    <?php if (isset($_SESSION['thank_you_message'])): ?>
+        <?php echo $_SESSION['thank_you_message']; ?>
+        <?php unset($_SESSION['thank_you_message']); // Clear the message after displaying ?>
     <?php else: ?>
-        <?= $thank_you_message ?>
+        <div class="checkout-container">
+            <div class="checkout-form">
+                <h2>Checkout</h2>
+                <form action="processOrder.php" method="post" id="orderForm">
+                    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+
+                    <div class="checkout-container">
+        <div class="checkout-form">
+            <h2>Checkout</h2>
+            <form action="processOrder.php" method="post" id="orderForm">
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+
+                <div class="input-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                    <span class="error" id="nameError"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="text" id="phone" name="phone" required>
+                    <span class="error" id="phoneError"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                    <span class="error" id="emailError"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" name="address" required>
+                    <span class="error" id="addressError"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="district">District</label>
+                    <input type="text" id="district" name="district" required>
+                    <span class="error" id="districtError"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="street">Street</label>
+                    <input type="text" id="street" name="street" required>
+                    <span class="error" id="streetError"></span>
+                </div>
+
+                <div class="input-group">
+                    <input type="checkbox" id="cod" name="cod">
+                    <label for="cod">Cash on Delivery</label>
+                </div>
+                    <button type="submit" class="checkout-btn">Place Order</button>
+            </form>
+            </div>
+        </div>
     <?php endif; ?>
-</div>
-</div>
+
+    
 </body>
 </html>
