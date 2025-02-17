@@ -62,7 +62,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 
     <header>
-        <!-- Add your header content -->
+    <style>
+        .header {
+        position: fixed;
+        width: 100%;
+        top: -10px;
+        left: 0;
+        background-color: var(--body-color);
+        z-index: var(--z-fixed);
+        transition: box-shadow .4s;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
     </header>
 
     <main>

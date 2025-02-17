@@ -71,6 +71,16 @@ try {
         </nav>
     </header>
     <style>
+        .header {
+        position: fixed;
+        width: 100%;
+        top: -10px;
+        left: 0;
+        background-color: var(--body-color);
+        z-index: var(--z-fixed);
+        transition: box-shadow .4s;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
         body {
             font-family: var(--body-font);
             background-color: var(--body-color);

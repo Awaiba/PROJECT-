@@ -21,6 +21,18 @@ $username = $_SESSION['username'];
       <link rel="stylesheet" href="assets/css/contactCss.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
       <title>WalkOn | Contacts</title>
+      <style>
+        .header {
+        position: fixed;
+        width: 100%;
+        top: -10px;
+        left: 0;
+        background-color: var(--body-color);
+        z-index: var(--z-fixed);
+        transition: box-shadow .4s;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        </style>
       <header class="header" id="header">
 
       <nav class="nav container">

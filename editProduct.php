@@ -62,7 +62,19 @@ if (isset($_GET['id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Product</title>
-    <link rel="stylesheet" href="style.css"> <!-- Link your CSS file -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .header {
+        position: fixed;
+        width: 100%;
+        top: -10px;
+        left: 0;
+        background-color: var(--body-color);
+        z-index: var(--z-fixed);
+        transition: box-shadow .4s;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        </style>
 </head>
 <body>
     <h1>Edit Product</h1>

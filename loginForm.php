@@ -10,12 +10,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>WalkOn - Login</title>
     <style>
+        .login-form {
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 510px;
+        }
         h1 {
             color: black;
         }
 
         button{
             padding: 5px;
+        }
+        .header {
+        position: fixed;
+        width: 100%;
+        top: -10px;
+        left: 0;
+        background-color: var(--body-color);
+        z-index: var(--z-fixed);
+        transition: box-shadow .4s;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
     </style>
     <header class="header" id="header">
@@ -56,7 +73,6 @@
 </head>
 <body>
     <div class="login-container">
-        <h1>Login to View Your Orders....</h1>
         <?php
         session_start();
         if (isset($_SESSION['login_error'])) {
@@ -66,9 +82,10 @@
         ?>
 
         <form action="processLogin.php" method="POST" class="login-form">
+        <h1>Login to View Your Orders</h1><br>
             <div class="input-group">
                 <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
+                <input type="text" id="username" name="username" placeholder="Enter your Email or Username" required>
                 <div id="usernameError" class="error-message"></div>
             </div>
 

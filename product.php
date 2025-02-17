@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+
 if (!isset($_SESSION['username'])) {
     header('Location: loginRegister.php'); 
     exit;
@@ -20,7 +21,7 @@ $username = $_SESSION['username'];
       <link rel="stylesheet" href="assets/css/sbar.css">
       <link rel="stylesheet" href="assets/css/productPage.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
+      
       <title>Walk On</title>
       <header class="header" id="header">
          <nav class="nav container">
@@ -63,70 +64,178 @@ $username = $_SESSION['username'];
             </div>
          </nav>
       </header>
+      <style>
+        /* Sidebar Styling */
+        .filter-sidebar {
+            width: 300px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .filter-sidebar h2 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        .filter-sidebar h3 {
+            font-size: 18px;
+            margin-top: 15px;
+            color: #007bff;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        ul li input {
+            margin-right: 10px;
+        }
+
+        .filter-reset button {
+            margin-top: 15px;
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .filter-reset button:hover {
+            background-color: #c82333;
+        }
+        .header {
+        position: fixed;
+        width: 100%;
+        top: -10px;
+        left: 0;
+        background-color: var(--body-color);
+        z-index: var(--z-fixed);
+        transition: box-shadow .4s;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .search-box {
+            margin: 20px 0;
+            padding: 10px;
+            font-size: 16px;
+            width: auto;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+        }
+
+        .product-list {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .product-item {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-item h3 {
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+
+        .product-item p {
+            color: #555;
+        }
+
+        .product-item .price {
+            font-weight: bold;
+            color: #dc3545;
+        }
+    </style>
    </head>
    <body>
             <main>
             <section class="productandsidebar">
-            <aside class="filter-sidebar">
-                <h2>Filter Products</h2>
-                    <div class="filter-category">
-                    <h3>Category</h3>
-                    <ul>
-                        <li><input type="checkbox" id="men" name="category" value="men" aria-label="Filter Men's Shoes"><label for="men">Men's Shoes</label></li>
-                        <li><input type="checkbox" id="women" name="category" value="women" aria-label="Filter Women's Shoes"><label for="women">Women's Shoes</label></li>
-                        <li><input type="checkbox" id="kids" name="category" value="kids" aria-label="Filter Kids' Shoes"><label for="kids">Kids' Shoes</label></li>
-                    </ul>
-                </div>
-                    <div class="filter-size">
-                    <h3>Size</h3>
-                    <ul>
-                        <li><input type="checkbox" id="size-6" name="size" value="6" aria-label="Filter size 6"><label for="size-6">6</label></li>
-                        <li><input type="checkbox" id="size-7" name="size" value="7" aria-label="Filter size 7"><label for="size-7">7</label></li>
-                        <li><input type="checkbox" id="size-8" name="size" value="8" aria-label="Filter size 8"><label for="size-8">8</label></li>
-                        <li><input type="checkbox" id="size-9" name="size" value="9" aria-label="Filter size 9"><label for="size-9">9</label></li>
-                        <li><input type="checkbox" id="size-10" name="size" value="10" aria-label="Filter size 10"><label for="size-10">10</label></li>
-                    </ul>
-                </div>
-                    <div class="filter-color">
-                    <h3>Color</h3>
-                    <ul>
-                        <li><input type="checkbox" id="black" name="color" value="black" aria-label="Filter Black color"><label for="black">Black</label></li>
-                        <li><input type="checkbox" id="white" name="color" value="white" aria-label="Filter White color"><label for="white">White</label></li>
-                        <li><input type="checkbox" id="red" name="color" value="red" aria-label="Filter Red color"><label for="red">Red</label></li>
-                        <li><input type="checkbox" id="blue" name="color" value="blue" aria-label="Filter Blue color"><label for="blue">Blue</label></li>
-                        <li><input type="checkbox" id="grey" name="color" value="grey" aria-label="Filter Grey color"><label for="grey">Grey</label></li>
-                    </ul>
-                </div>
-                    <div class="filter-brand">
-                    <h3>Brand</h3>
-                    <ul>
-                        <li><input type="checkbox" id="nike" name="brand" value="nike" aria-label="Filter Nike"><label for="nike">Nike</label></li>
-                        <li><input type="checkbox" id="adidas" name="brand" value="adidas" aria-label="Filter Adidas"><label for="adidas">Adidas</label></li>
-                        <li><input type="checkbox" id="puma" name="brand" value="puma" aria-label="Filter Puma"><label for="puma">Puma</label></li>
-                        <li><input type="checkbox" id="reebok" name="brand" value="reebok" aria-label="Filter Reebok"><label for="reebok">Reebok</label></li>
-                    </ul>
-                </div>
-                    <div class="filter-price">
-                    <h3>Price</h3>
-                    <input type="range" id="price-range" name="price" min="0" max="10000" value="250" step="10" aria-label="Filter Price Range">
-                    <label for="price-range">Price: $<span id="price-min">0</span> - $<span id="price-max">10000</span></label>
-                </div>
-                    <div class="filter-material">
-                    <h3>Material</h3>
-                    <ul>
-                        <li><input type="checkbox" id="leather" name="material" value="leather" aria-label="Filter Leather"><label for="leather">Leather</label></li>
-                        <li><input type="checkbox" id="synthetic" name="material" value="synthetic" aria-label="Filter Synthetic"><label for="synthetic">Synthetic</label></li>
-                        <li><input type="checkbox" id="mesh" name="material" value="mesh" aria-label="Filter Mesh"><label for="mesh">Mesh</label></li>
-                        <li><input type="checkbox" id="canvas" name="material" value="canvas" aria-label="Filter Canvas"><label for="canvas">Canvas</label></li>
-                    </ul>
-                </div>
-                    <div class="filter-reset">
-                    <button type="button" id="reset-filters">Reset Filters</button>
-                </div>
-            </aside>
-            </section>
-            <section id="product1" class="section1">
-                <div class="jordan">
+    <aside class="filter-sidebar">
+        <h2>Filter Products</h2>
+        <div>
+    <input type="text" id="searchBox" class="search-box" placeholder="Search products..." onkeyup="filterProducts()">
+   </div>
+
+        <!-- Category -->
+        <div class="filter-category">
+            <h3>Category</h3>
+            <ul>
+                <li><input type="checkbox" id="men" name="category" value="men"><label for="men">Men's Shoes</label></li>
+                <li><input type="checkbox" id="women" name="category" value="women"><label for="women">Women's Shoes</label></li>
+                <li><input type="checkbox" id="kids" name="category" value="kids"><label for="kids">Kids' Shoes</label></li>
+            </ul>
+        </div>
+
+        <!-- Size -->
+        <div class="filter-size">
+            <h3>Size</h3>
+            <ul>
+                <li><input type="checkbox" id="size-6" name="size" value="6"><label for="size-6">6</label></li>
+                <li><input type="checkbox" id="size-7" name="size" value="7"><label for="size-7">7</label></li>
+                <li><input type="checkbox" id="size-8" name="size" value="8"><label for="size-8">8</label></li>
+                <li><input type="checkbox" id="size-9" name="size" value="9"><label for="size-9">9</label></li>
+                <li><input type="checkbox" id="size-10" name="size" value="10"><label for="size-10">10</label></li>
+            </ul>
+        </div>
+
+        <!-- Color -->
+        <div class="filter-color">
+            <h3>Color</h3>
+            <ul>
+                <li><input type="checkbox" id="black" name="color" value="black"><label for="black">Black</label></li>
+                <li><input type="checkbox" id="white" name="color" value="white"><label for="white">White</label></li>
+                <li><input type="checkbox" id="red" name="color" value="red"><label for="red">Red</label></li>
+                <li><input type="checkbox" id="blue" name="color" value="blue"><label for="blue">Blue</label></li>
+                <li><input type="checkbox" id="grey" name="color" value="grey"><label for="grey">Grey</label></li>
+            </ul>
+        </div>
+
+        <!-- Brand -->
+        <div class="filter-brand">
+            <h3>Brand</h3>
+            <ul>
+                <li><input type="checkbox" id="nike" name="brand" value="nike"><label for="nike">Nike</label></li>
+                <li><input type="checkbox" id="adidas" name="brand" value="adidas"><label for="adidas">Adidas</label></li>
+                <li><input type="checkbox" id="puma" name="brand" value="puma"><label for="puma">Puma</label></li>
+                <li><input type="checkbox" id="reebok" name="brand" value="reebok"><label for="reebok">Reebok</label></li>
+            </ul>
+        </div>
+
+        <!-- Material -->
+        <div class="filter-material">
+            <h3>Material</h3>
+            <ul>
+                <li><input type="checkbox" id="leather" name="material" value="leather"><label for="leather">Leather</label></li>
+                <li><input type="checkbox" id="synthetic" name="material" value="synthetic"><label for="synthetic">Synthetic</label></li>
+                <li><input type="checkbox" id="mesh" name="material" value="mesh"><label for="mesh">Mesh</label></li>
+                <li><input type="checkbox" id="canvas" name="material" value="canvas"><label for="canvas">Canvas</label></li>
+            </ul>
+        </div>
+
+        <!-- Reset Button -->
+        <div class="filter-reset">
+            <button type="button" id="reset-filters">Reset Filters</button>
+        </div>
+    </aside>
+</section>
+   <section id="product1" class="section1">
+   <div class="jordan">
    <div class="pro-container">
       <div class="pro" data-category="men" data-brand="Jordan" data-price="6000" data-material="leather" data-color="blue" data-size="9">
          <img src="assets/img/JORDAN/AIR+JORDAN+1+LOW+SE.png" alt="Air Jordan 1 Low SE" class="product-image">
@@ -503,4 +612,48 @@ $username = $_SESSION['username'];
       <script src="assets/js/sbjs.js"></script>
 
    </body>
+   <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const filterGroups = ["category", "size", "color", "brand", "material"];
+
+        filterGroups.forEach(group => {
+            const checkboxes = document.querySelectorAll(`input[name="${group}"]`);
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener("change", function () {
+                    if (this.checked) {
+                        checkboxes.forEach(cb => {
+                            if (cb !== this) cb.checked = false;
+                        });
+                    }
+                });
+            });
+        });
+
+        // Reset Filters
+        document.getElementById("reset-filters").addEventListener("click", function () {
+            document.querySelectorAll(".filter-sidebar input[type='checkbox']").forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        });
+    });
+
+      // Function to filter products based on search query
+      function filterProducts() {
+        const query = document.getElementById('searchBox').value.toLowerCase();
+        const productItems = document.getElementsByClassName('product-item');
+
+        Array.from(productItems).forEach(item => {
+            const title = item.querySelector('h3').textContent.toLowerCase();
+            const brand = item.querySelector('p').textContent.toLowerCase();
+            const category = item.querySelectorAll('p')[1].textContent.toLowerCase();
+
+            if (title.includes(query) || brand.includes(query) || category.includes(query)) {
+                item.style.display = 'block';  // Show item if it matches
+            } else {
+                item.style.display = 'none';   // Hide item if it doesn't match
+            }
+        });
+    }
+</script>
 </html>
