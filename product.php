@@ -596,64 +596,75 @@ $username = $_SESSION['username'];
 </div>
 
 <script>
-   function redirectToBuyout(name, image, price, color, material, size) {
-      const url = `buyout.php?name=${encodeURIComponent(name)}&image=${encodeURIComponent(image)}&price=${encodeURIComponent(price)}&color=${encodeURIComponent(color)}&material=${encodeURIComponent(material)}&size=${encodeURIComponent(size)}`;
-      window.location.href = url;
-   }
-   </script>
-   <br><br> 
-      </section>
-      </main>
-   </section>
-   </main>
-      <script src="assets/js/swiper-bundle.min.js"></script>
-      <script src="assets/js/main.js"></script>
-      <script src="assets/js/cart.js"></script>
-      <script src="assets/js/sbjs.js"></script>
+document.addEventListener("DOMContentLoaded", function () {
+    const filterGroups = ["category", "size", "color", "brand", "material"];
 
-   </body>
-   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const filterGroups = ["category", "size", "color", "brand", "material"];
-
-        filterGroups.forEach(group => {
-            const checkboxes = document.querySelectorAll(`input[name="${group}"]`);
-            
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener("change", function () {
-                    if (this.checked) {
-                        checkboxes.forEach(cb => {
-                            if (cb !== this) cb.checked = false;
-                        });
-                    }
-                });
-            });
-        });
-
-        // Reset Filters
-        document.getElementById("reset-filters").addEventListener("click", function () {
-            document.querySelectorAll(".filter-sidebar input[type='checkbox']").forEach(checkbox => {
-                checkbox.checked = false;
+    // Ensure only one checkbox is checked per filter group
+    filterGroups.forEach(group => {
+        const checkboxes = document.querySelectorAll(`input[name="${group}"]`);
+        
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", function () {
+                if (this.checked) {
+                    checkboxes.forEach(cb => {
+                        if (cb !== this) cb.checked = false;
+                    });
+                }
+                filterProducts(); // Apply filtering when a filter is selected
             });
         });
     });
 
-      // Function to filter products based on search query
-      function filterProducts() {
+    // Reset Filters
+    document.getElementById("reset-filters").addEventListener("click", function () {
+        document.querySelectorAll(".filter-sidebar input[type='checkbox']").forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        filterProducts(); // Refresh products after reset
+    });
+
+    // Search filtering
+    document.getElementById('searchBox').addEventListener('input', filterProducts);
+
+    function filterProducts() {
         const query = document.getElementById('searchBox').value.toLowerCase();
-        const productItems = document.getElementsByClassName('product-item');
+        const products = document.querySelectorAll('.pro');
 
-        Array.from(productItems).forEach(item => {
-            const title = item.querySelector('h3').textContent.toLowerCase();
-            const brand = item.querySelector('p').textContent.toLowerCase();
-            const category = item.querySelectorAll('p')[1].textContent.toLowerCase();
+        // Get selected filter values
+        let selectedFilters = {};
+        filterGroups.forEach(group => {
+            const checked = document.querySelector(`input[name="${group}"]:checked`);
+            if (checked) {
+                selectedFilters[group] = checked.value.toLowerCase();
+            }
+        });
 
-            if (title.includes(query) || brand.includes(query) || category.includes(query)) {
-                item.style.display = 'block';  // Show item if it matches
+        products.forEach(product => {
+            const title = product.querySelector('h5').textContent.toLowerCase();
+            const brand = product.querySelector('span').textContent.toLowerCase();
+            const category = product.dataset.category.toLowerCase();
+            const size = product.dataset.size.toLowerCase();
+            const color = product.dataset.color.toLowerCase();
+            const material = product.dataset.material.toLowerCase();
+
+            let matchesSearch = title.includes(query) || brand.includes(query);
+            let matchesFilters = true;
+
+            for (const key in selectedFilters) {
+                if (product.dataset[key] !== selectedFilters[key]) {
+                    matchesFilters = false;
+                    break;
+                }
+            }
+
+            if (matchesSearch && matchesFilters) {
+                product.style.display = "block";
             } else {
-                item.style.display = 'none';   // Hide item if it doesn't match
+                product.style.display = "none";
             }
         });
     }
+});
+
 </script>
 </html>
