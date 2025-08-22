@@ -156,6 +156,28 @@ $username = $_SESSION['username'];
 
 
 
+        <?php
+
+function generateRandomString($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[random_int(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
+
+$transaction_uuid = time() . generateRandomString(16);
+$product_code = 'EPAYTEST';
+$product_service_charge = 0;
+$product_delivery_charge = 0;
+$secretKey = '8gBm/:&EnhH.1/q';
+
+$message = "total_amount={$total_amount},transaction_uuid={$transaction_uuid},product_code={$product_code}";
+$signature = base64_encode(hash_hmac('sha256', $message, $secretKey, true));
+?>
+
     <main>
         <section class="product-details">
             <h1>Product Buyout</h1>
@@ -166,24 +188,125 @@ $username = $_SESSION['username'];
                 <p class="price" id="product-price">Product Price</p>
             </div>
 
-            <button class="buy-btn">Proceed to Checkout</button>
         </section>
 
         <script>
-            const params = new URLSearchParams(window.location.search);
-            const productName = params.get('name');
-            const productImage = params.get('image');
-            const productPrice = params.get('price');
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the query parameters
+        const params = new URLSearchParams(window.location.search);
+        const productName = params.get('name');
+        const productImage = params.get('image');
+        const productPrice = params.get('price');
 
-            document.getElementById('product-name').innerText = decodeURIComponent(productName);
-            document.getElementById('product-image').src = decodeURIComponent(productImage);
-            document.getElementById('product-price').innerText = decodeURIComponent(productPrice);
+        // Update product details in the DOM
+        document.getElementById('product-name').innerText = decodeURIComponent(productName);
+        document.getElementById('product-image').src = decodeURIComponent(productImage);
+        document.getElementById('product-price').innerText = decodeURIComponent(productPrice);
+        console.log(decodeURIComponent(productPrice));
 
-            document.querySelector('.buy-btn').addEventListener('click', function() {
-                window.location.href = 'checkoutform.php'; 
+        // Set the price value
+        var priceValue = parseFloat(decodeURIComponent(productPrice));
+        console.log(priceValue);
+
+        // Set the form input fields with the price and other parameters
+        document.getElementById('amount').value = priceValue;
+        document.getElementById('total_amount').value = priceValue;
+
+        // Using PHP-generated values
+        const transaction_uuid = <?php echo json_encode($transaction_uuid); ?>;
+        const product_code = <?php echo json_encode($product_code); ?>;
+        const product_service_charge = <?php echo json_encode($product_service_charge); ?>;
+        const product_delivery_charge = <?php echo json_encode($product_delivery_charge); ?>;
+        const secretKey = '8gBm/:&EnhH.1/q';  // Secret key must be consistent
+
+        // Create the message string for signature (must match PHP message construction)
+        const message = `total_amount=${priceValue},transaction_uuid=${transaction_uuid},product_code=${product_code}`;
+        
+        // Generate the HMAC-SHA256 signature in JavaScript (using Web Crypto API)
+        const encoder = new TextEncoder();
+        const key = encoder.encode(secretKey);
+        const data = encoder.encode(message);
+
+        window.crypto.subtle.importKey('raw', key, { name: 'HMAC', hash: { name: 'SHA-256' } }, false, ['sign'])
+            .then((cryptoKey) => {
+                return window.crypto.subtle.sign('HMAC', cryptoKey, data);
+            })
+            .then((signatureBuffer) => {
+                const signatureArray = new Uint8Array(signatureBuffer);
+                const signature = btoa(String.fromCharCode.apply(null, signatureArray));
+
+                // Set the signature in the form
+                document.getElementById('signature').value = signature;
+                document.getElementById('transaction_uuid').value = transaction_uuid;
+                document.getElementById('product_code').value = product_code;
+                document.getElementById('product_service_charge').value = product_service_charge;
+                document.getElementById('product_delivery_charge').value = product_delivery_charge;
+            })
+            .catch((error) => {
+                console.error('Error generating signature:', error);
             });
-        </script>
+
+        // Add event listener for the checkout button
+        document.querySelector('.buy-btn').addEventListener('click', function() {
+            window.location.href = 'checkoutform.php'; 
+        });
+    });
+</script>
+
+
     </main>
+
+
+
+
+
+
+
+
+
+<form action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST">
+    <div style="display:none">
+    <input type="text" id="amount" name="amount"  required>
+    <input type="text" id="tax_amount" name="tax_amount" value="0"  required>
+    <input type="text" id="total_amount" name="total_amount"  required>
+    <input type="text" id="transaction_uuid" name="transaction_uuid" required>
+    <input type="text" id="product_code" name="product_code" required>
+    <input type="text" id="product_service_charge" name="product_service_charge"  required>
+    <input type="text" id="product_delivery_charge" name="product_delivery_charge" required>
+    <input type="text" id="success_url" name="success_url" value="https://developer.esewa.com.np/success" required>
+    <input type="text" id="failure_url" name="failure_url" value="https://developer.esewa.com.np/failure" required>
+    <input type="text" id="signed_field_names" name="signed_field_names" value="total_amount,transaction_uuid,product_code" required>
+    <input type="text" id="signature" name="signature"  required>
+
+    </div>
+    <input value="Proceed to Checkout" class="buy-btn" type="submit">
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <section class="footer">
          <div class="footer-info">

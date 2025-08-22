@@ -316,58 +316,52 @@ try {
                 <form action="processOrder.php" method="post" id="orderForm">
                     <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 
-                    <div class="checkout-container">
-        <div class="checkout-form">
-            <h2>Checkout</h2>
-            <form action="processOrder.php" method="post" id="orderForm">
-                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                    <div class="input-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required>
+                        <span class="error" id="nameError"></span>
+                    </div>
 
-                <div class="input-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" name="name" required>
-                    <span class="error" id="nameError"></span>
-                </div>
+                    <div class="input-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="text" id="phone" name="phone" required>
+                        <span class="error" id="phoneError"></span>
+                    </div>
 
-                <div class="input-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="text" id="phone" name="phone" required>
-                    <span class="error" id="phoneError"></span>
-                </div>
+                    <div class="input-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                        <span class="error" id="emailError"></span>
+                    </div>
 
-                <div class="input-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                    <span class="error" id="emailError"></span>
-                </div>
+                    <div class="input-group">
+                        <label for="address">Address</label>
+                        <input type="text" id="address" name="address" required>
+                        <span class="error" id="addressError"></span>
+                    </div>
 
-                <div class="input-group">
-                    <label for="address">Address</label>
-                    <input type="text" id="address" name="address" required>
-                    <span class="error" id="addressError"></span>
-                </div>
+                    <div class="input-group">
+                        <label for="district">District</label>
+                        <input type="text" id="district" name="district" required>
+                        <span class="error" id="districtError"></span>
+                    </div>
 
-                <div class="input-group">
-                    <label for="district">District</label>
-                    <input type="text" id="district" name="district" required>
-                    <span class="error" id="districtError"></span>
-                </div>
+                    <div class="input-group">
+                        <label for="street">Street</label>
+                        <input type="text" id="street" name="street" required>
+                        <span class="error" id="streetError"></span>
+                    </div>
 
-                <div class="input-group">
-                    <label for="street">Street</label>
-                    <input type="text" id="street" name="street" required>
-                    <span class="error" id="streetError"></span>
-                </div>
+                    <div class="input-group">
+                        <label><input type="radio" name="payment_method" value="cod" required> Cash on Delivery</label>
+                        <label><input type="radio" name="payment_method" value="esewa" required> eSewa</label>
+                    </div>
 
-                <div class="input-group">
-                    <input type="checkbox" id="cod" name="cod">
-                    <label for="cod">Cash on Delivery</label>
-                </div>
                     <button type="submit" class="checkout-btn">Place Order</button>
-            </form>
+                </form>
             </div>
         </div>
     <?php endif; ?>
-
-    
 </body>
+
 </html>

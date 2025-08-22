@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $street = $_POST['street'];
     $cod = isset($_POST['cod']) ? 'COD' : 'Online Payment'; 
 
+    echo $name, $phone, $email, $address, $district, $street, $cod;
     $product_id = 1; // Assuming a product ID for order
     $quantity = 1; // Assuming a quantity for order
 
